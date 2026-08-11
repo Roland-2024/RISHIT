@@ -20,4 +20,4 @@ Tests must include simultaneous bids, seller self-bids, late bids, invalid incre
 
 ## Unresolved before implementation
 
-Increment tiers, bidder verification, winner payment deadline, failed-winner policy, cancellation rules, and legal auction requirements.
+Increment tiers, bidder verification, winner payment deadline, failed-winner policy, cancellation rules, and legal auction requirements. The required Albania and Kosovo review questions are tracked in [LEGAL-READINESS.md](LEGAL-READINESS.md).

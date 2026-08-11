@@ -28,4 +28,4 @@ This design will be created with the first real commerce use case, not as empty 
 
 POK marketplace approval, seller/KYC/account requirements, split/refund behavior, authorization hold duration, capture/payout timing, buyer-side funding, Buyer Protection fee, dispute period, tax/fiscal treatment, and Kosovo support.
 
-See [POK-MARKETPLACE-RESEARCH.md](POK-MARKETPLACE-RESEARCH.md).
+See [POK-MARKETPLACE-RESEARCH.md](POK-MARKETPLACE-RESEARCH.md) for provider evidence and [LEGAL-READINESS.md](LEGAL-READINESS.md) for the counsel/provider decision gates and prohibited public claims.

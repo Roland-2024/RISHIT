@@ -34,3 +34,5 @@ Use this checklist before selecting a courier. Do not code an adapter until requ
 ## Selection output
 
 Record verified capabilities, missing requirements, pricing examples in EUR, API documents, sandbox evidence, support contacts, and a go/no-go decision. Final provider: **UNRESOLVED**.
+
+Counsel/provider decisions for contracting roles, loss/damage, returns, disputes, privacy, tax, public wording, and Kosovo are tracked in [LEGAL-READINESS.md](LEGAL-READINESS.md).

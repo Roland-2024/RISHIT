@@ -90,7 +90,7 @@ Marketplace defaults that are safe to define now live in `config/marketplace.php
 
 RISHIT is a modular Laravel monolith. Blade and future API controllers must call the same application/domain logic. Public indexable content remains server-rendered. Provider-specific payment and shipping data will stay at adapter boundaries once real integrations exist; no speculative interfaces or fake providers are present today.
 
-Start with [docs/ROADMAP.md](docs/ROADMAP.md) for task readiness, then [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), [docs/BUSINESS-RULES.md](docs/BUSINESS-RULES.md), and [AGENTS.md](AGENTS.md).
+Start with [docs/ROADMAP.md](docs/ROADMAP.md) for task readiness, [docs/LEGAL-READINESS.md](docs/LEGAL-READINESS.md) for counsel/provider gates, then [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), [docs/BUSINESS-RULES.md](docs/BUSINESS-RULES.md), and [AGENTS.md](AGENTS.md).
 
 ## Troubleshooting
 
