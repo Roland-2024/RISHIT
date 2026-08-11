@@ -12,7 +12,7 @@ Status snapshot: 2026-08-11. Tasks 02–10 were verified in `master` commit `43a
 - `REVIEW`: its pull request is ready but not merged; dependants must still wait.
 - `DONE`: verified work is merged into `master`.
 
-Task 01 is in `REVIEW`. After it is merged and marked `DONE`, **Task 11 — Production image hardening** is the single recommended next task and is already `READY` on its implemented dependencies.
+Task 01 is merged and `DONE`. **Task 11 — Production image hardening** is the single recommended next task and is `READY` on its implemented dependencies.
 
 ## Decision register
 
@@ -33,7 +33,7 @@ Blocker IDs refer to the external blocker register below. Acceptance criteria de
 
 | Task | Outcome | Depends on | Status | Concise acceptance criteria | External blockers |
 | --- | --- | --- | --- | --- | --- |
-| 01 | Decision register and executable roadmap | — | REVIEW | One authoritative Tasks 01–36 register reflects implemented work, dependencies, decisions, blockers, and graph; related docs agree; no application behavior changes. | — |
+| 01 | Decision register and executable roadmap | — | DONE | One authoritative Tasks 01–36 register reflects implemented work, dependencies, decisions, blockers, and graph; related docs agree; no application behavior changes. | — |
 | 02 | Laravel and local runtime foundation | — | DONE | Laravel 13/PHP 8.5 app, locked dependencies, Docker Compose MySQL/Redis services, environment template, setup and verification commands exist. | — |
 | 03 | Localization and money foundation | 02 | DONE | `sq`/`en` routing and translations work; EUR money uses integer cents and explicit currency; legacy ALL display remains identifiable and private from public discovery. | — |
 | 04 | Identity and security baseline | 02 | DONE | One buyer/seller identity supports registration, login/logout, hashed passwords, session regeneration, throttling, unique credentials, and Sanctum-ready users. | — |
