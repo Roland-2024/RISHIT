@@ -1,5 +1,7 @@
 # MVP
 
+This file describes product phases. [ROADMAP.md](ROADMAP.md) is authoritative for numbered task scope, dependencies, readiness, and blockers.
+
 ## Goal
 
 Complete one reliable fixed-price marketplace loop before expanding feature breadth:
