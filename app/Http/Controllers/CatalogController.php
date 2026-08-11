@@ -15,7 +15,33 @@ class CatalogController extends Controller
 {
     public function __invoke(Request $request): View
     {
+        return $this->render($request);
+    }
+
+    public function category(Request $request, string $locale, Category $category): View
+    {
+        abort_unless($category->is_active, 404);
+
+        return $this->render($request, ['category' => $category->slug], [
+            'metaTitle' => __('catalog.category_meta_title', ['category' => $category->label()]),
+            'metaDescription' => __('catalog.category_meta_description', ['category' => $category->label()]),
+            'heading' => $category->label(),
+        ]);
+    }
+
+    public function brand(Request $request, string $locale, Brand $brand): View
+    {
+        return $this->render($request, ['brand' => $brand->slug], [
+            'metaTitle' => __('catalog.brand_meta_title', ['brand' => $brand->name]),
+            'metaDescription' => __('catalog.brand_meta_description', ['brand' => $brand->name]),
+            'heading' => $brand->name,
+        ]);
+    }
+
+    private function render(Request $request, array $forcedFilters = [], array $page = []): View
+    {
         $filters = $request->validate(CatalogFilters::rules());
+        $filters = array_replace($filters, $forcedFilters);
         $filters['currency'] = Currency::EUR->value;
 
         return view('catalog.index', [
@@ -24,6 +50,9 @@ class CatalogController extends Controller
             'brands' => Brand::query()->orderBy('name')->get(),
             'conditions' => ListingCondition::cases(),
             'filters' => $filters,
+            'metaTitle' => $page['metaTitle'] ?? __('catalog.meta_title'),
+            'metaDescription' => $page['metaDescription'] ?? __('catalog.meta_description'),
+            'heading' => $page['heading'] ?? __('catalog.title'),
         ]);
     }
 }

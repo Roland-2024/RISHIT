@@ -10,6 +10,7 @@
 
 - The checked-in EUR decision supersedes older planning-prompt requirements for ALL. ALL is supported only as identifiable legacy data, not for new public listings or marketplace transactions.
 - New listings and all future marketplace transactions use EUR only.
+- New listing prices must be greater than zero.
 - All internal amounts are signed integer cents with explicit `EUR` currency; `5200` means `€52.00`.
 - Historical non-EUR records are preserved for audit and owner access, excluded from public discovery, and never relabeled or converted without an explicit migration policy.
 - No financial calculation uses floating point.
@@ -21,6 +22,7 @@
 
 - A second-hand listing represents one unique item unless explicitly modeled otherwise.
 - Catalog listings have explicit `active`, `hidden`, or `sold` status; only active EUR listings appear publicly.
+- Hidden, sold, soft-deleted, and legacy non-EUR listings remain available only where an authorized owner flow explicitly needs them; they never appear in public discovery.
 - Sellers alone can edit, hide, republish, or soft-delete their listings.
 - Listing condition uses a controlled set; seller descriptions must disclose wear and flaws.
 - A listing accepts at most eight validated JPG, PNG, or WebP images in explicit display order.

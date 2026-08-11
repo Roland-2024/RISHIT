@@ -2,7 +2,7 @@
 
 This is the authoritative source for numbered task scope, dependencies, status, and external blockers. Product-level sequencing in [MVP.md](MVP.md) remains useful context; when it conflicts with this file, this file controls task execution.
 
-Status snapshot: 2026-08-11. Task 01 was merged in `master` commit `f7f7705`. Tasks 02–10 were verified in `master` commit `43aa21b`; they are not missing work.
+Status snapshot: 2026-08-11. Task 01 was merged in `master` commit `f7f7705`. Tasks 02–05 and 07–10 were verified in `master` commit `43aa21b`. Task 06 catalog completion is in review.
 
 ## Status rules and next action
 
@@ -12,7 +12,7 @@ Status snapshot: 2026-08-11. Task 01 was merged in `master` commit `f7f7705`. Ta
 - `REVIEW`: its pull request is ready but not merged; dependants must still wait.
 - `DONE`: verified work is merged into `master`.
 
-Task 01 is merged and `DONE`. **Task 11 — Production image hardening** is the single recommended next implementation task and is `READY` on its implemented dependencies. External legal/provider evidence work may proceed without changing blocked implementation tasks to `READY`.
+Task 01 is merged and `DONE`; Task 06 is `REVIEW`. **Task 11 — Production image hardening** remains the single recommended next implementation task and is `READY` on its implemented dependencies. External legal/provider evidence work may proceed without changing blocked implementation tasks to `READY`.
 
 ## Decision register
 
@@ -38,7 +38,7 @@ Blocker IDs refer to the external blocker register below. Acceptance criteria de
 | 03 | Localization and money foundation | 02 | DONE | `sq`/`en` routing and translations work; EUR money uses integer cents and explicit currency; legacy ALL display remains identifiable and private from public discovery. | — |
 | 04 | Identity and security baseline | 02 | DONE | One buyer/seller identity supports registration, login/logout, hashed passwords, session regeneration, throttling, unique credentials, and Sanctum-ready users. | — |
 | 05 | Catalog data foundation | 03, 04 | DONE | Categories, brands, unique-item listings, ordered images, favorites, factories, and deterministic seed data exist with explicit status/currency fields. | — |
-| 06 | Public SSR catalog and profiles | 05 | DONE | Blade renders home, catalog, listing, and seller pages; active EUR inventory supports shared search/filter/sort without JavaScript. | — |
+| 06 | Catalog completion audit | 01 | REVIEW | Existing catalog behavior is preserved; active EUR inventory is consistent across SSR and `/api/v1`, category/brand landings are indexable, and unavailable inventory stays private. | — |
 | 07 | Seller listing and photo management | 05, 06 | DONE | Owners can create, edit, hide, republish, and soft-delete EUR listings with validated ordered images and policy enforcement. | — |
 | 08 | Favorites | 04, 05, 06 | DONE | Authenticated users can add/remove unique favorites and view a private favorites page; hidden/deleted inventory stays out of public surfaces. | — |
 | 09 | Read-only API foundation | 05, 06 | DONE | `/api/v1/health` and paginated listing endpoints return active EUR data, reuse catalog filters, and expose integer amounts with currency. | — |
@@ -91,7 +91,7 @@ flowchart TD
     T02 --> T04["04 Identity"]
     T03 --> T05["05 Catalog data"]
     T04 --> T05
-    T05 --> T06["06 Public catalog"]
+    T01 --> T06["06 Catalog completion"]
     T05 --> T07["07 Listing management"]
     T06 --> T07
     T04 --> T08["08 Favorites"]

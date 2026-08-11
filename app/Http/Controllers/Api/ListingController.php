@@ -24,7 +24,7 @@ class ListingController extends Controller
 
     public function show(Listing $listing): ListingResource
     {
-        abort_unless($listing->status->value === 'active' && $listing->currency === Currency::EUR, 404);
+        abort_unless($listing->isPubliclyVisible(), 404);
 
         return new ListingResource($listing->load(['brand', 'category', 'images', 'user']));
     }

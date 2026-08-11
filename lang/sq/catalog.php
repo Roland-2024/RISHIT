@@ -3,6 +3,10 @@
 return [
     'meta_title' => 'Shfleto modë të përdorur — RISHIT',
     'meta_description' => 'Kërko listime origjinale të dorës së dytë nga shitës në Shqipëri.',
+    'category_meta_title' => 'Modë e përdorur: :category — RISHIT',
+    'category_meta_description' => 'Shfleto listime aktive në EUR për :category nga shitës në Shqipëri.',
+    'brand_meta_title' => 'Modë e përdorur :brand — RISHIT',
+    'brand_meta_description' => 'Shfleto listime aktive :brand në EUR nga shitës në Shqipëri.',
     'title' => 'Gjej copën që i shkon historisë tënde.',
     'eyebrow' => 'Katalogu RISHIT',
     'results' => ':count artikuj',
@@ -40,6 +44,12 @@ return [
     'color' => 'Ngjyra',
     'no_brand' => 'Pa markë',
     'buy_unavailable' => 'Blerja aktivizohet pasi të verifikohen pagesa dhe dërgesa.',
+    'unavailable' => [
+        'hidden' => 'Ky listim është i fshehur dhe nuk është i disponueshëm për blerësit.',
+        'sold' => 'Ky artikull është shitur dhe nuk është i disponueshëm për blerësit.',
+        'deleted' => 'Ky listim është fshirë dhe nuk është i disponueshëm për blerësit.',
+        'legacy_currency' => 'Ky listim i vjetër jo në EUR nuk është i disponueshëm për blerësit.',
+    ],
     'sell_title' => 'Jepi një artikulli historinë e radhës',
     'edit_title' => 'Ndrysho listimin',
     'my_listings' => 'Listimet e mia',
@@ -86,5 +96,6 @@ return [
     ],
     'validation' => [
         'photo_limit' => 'Një listim mund të ketë jo më shumë se 8 fotografi.',
+        'positive_price' => 'Çmimi duhet të jetë më i madh se zero.',
     ],
 ];

@@ -32,7 +32,18 @@ class Category extends Model
 
     public function label(): string
     {
-        return $this->{'name_'.app()->getLocale()};
+        return $this->labels()[app()->getLocale()];
+    }
+
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
+
+    /** @return array{sq: string, en: string} */
+    public function labels(): array
+    {
+        return ['sq' => $this->name_sq, 'en' => $this->name_en];
     }
 
     protected function casts(): array

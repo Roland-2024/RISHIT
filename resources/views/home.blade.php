@@ -56,7 +56,7 @@
                 <h2 class="text-2xl font-black text-forest">{{ __('catalog.popular_categories') }}</h2>
                 <div class="mt-6 flex flex-wrap gap-2">
                     @foreach ($categories as $category)
-                        <a href="{{ route('catalog.index', ['category' => $category->slug]) }}" class="rounded-full border border-ink/15 bg-sand px-4 py-2 font-semibold hover:border-forest">{{ $category->label() }}</a>
+                        <a href="{{ route('categories.show', $category) }}" class="rounded-full border border-ink/15 bg-sand px-4 py-2 font-semibold hover:border-forest">{{ $category->label() }}</a>
                     @endforeach
                 </div>
             </div>
@@ -64,7 +64,7 @@
                 <h2 class="text-2xl font-black text-forest">{{ __('catalog.popular_brands') }}</h2>
                 <div class="mt-6 flex flex-wrap gap-2">
                     @foreach ($brands as $brand)
-                        <a href="{{ route('catalog.index', ['brand' => $brand->slug]) }}" class="rounded-full border border-ink/15 bg-sand px-4 py-2 font-semibold hover:border-forest">{{ $brand->name }}</a>
+                        <a href="{{ route('brands.show', $brand) }}" class="rounded-full border border-ink/15 bg-sand px-4 py-2 font-semibold hover:border-forest">{{ $brand->name }}</a>
                     @endforeach
                 </div>
             </div>

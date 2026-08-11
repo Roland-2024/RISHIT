@@ -15,13 +15,17 @@
         </section>
 
         <aside class="lg:sticky lg:top-6 lg:self-start">
-            <p class="text-sm font-bold text-coral">{{ $listing->category->label() }}</p>
+            <p class="text-sm font-bold text-coral"><a href="{{ route('categories.show', $listing->category) }}">{{ $listing->category->label() }}</a></p>
             <h1 class="mt-2 text-4xl font-black tracking-[-0.04em] text-forest">{{ $listing->title }}</h1>
             <x-money :amount="$listing->price_amount" :currency="$listing->currency" class="mt-5 block text-3xl font-black text-forest" />
 
+            @if ($reason = $listing->publicUnavailabilityReason())
+                <p class="mt-5 rounded-2xl bg-coral/10 p-4 text-sm font-bold leading-6 text-coral-dark">{{ __('catalog.unavailable.'.$reason) }}</p>
+            @endif
+
             <dl class="mt-8 grid grid-cols-2 gap-x-5 gap-y-4 rounded-2xl border border-ink/10 bg-white p-5 text-sm">
                 <div><dt class="text-ink/50">{{ __('catalog.condition') }}</dt><dd class="mt-1 font-bold">{{ __('catalog.condition_labels.'.$listing->condition->value) }}</dd></div>
-                <div><dt class="text-ink/50">{{ __('catalog.brand') }}</dt><dd class="mt-1 font-bold">{{ $listing->brand?->name ?? __('catalog.no_brand') }}</dd></div>
+                <div><dt class="text-ink/50">{{ __('catalog.brand') }}</dt><dd class="mt-1 font-bold">@if ($listing->brand)<a href="{{ route('brands.show', $listing->brand) }}">{{ $listing->brand->name }}</a>@else{{ __('catalog.no_brand') }}@endif</dd></div>
                 @if ($listing->size)<div><dt class="text-ink/50">{{ __('catalog.size') }}</dt><dd class="mt-1 font-bold">{{ $listing->size }}</dd></div>@endif
                 @if ($listing->color)<div><dt class="text-ink/50">{{ __('catalog.color') }}</dt><dd class="mt-1 font-bold">{{ $listing->color }}</dd></div>@endif
             </dl>
@@ -36,6 +40,7 @@
                 <span aria-hidden="true">→</span>
             </a>
 
+            @if ($listing->isPubliclyVisible())
             @auth
                 @php($isFavorited = (bool) $listing->is_favorited)
                 <form method="POST" action="{{ $isFavorited ? route('favorites.destroy', $listing) : route('favorites.store', $listing) }}" class="mt-4">
@@ -48,6 +53,7 @@
             @endauth
 
             <p class="mt-4 rounded-2xl bg-lilac/60 p-4 text-sm font-semibold leading-6 text-forest">{{ __('catalog.buy_unavailable') }}</p>
+            @endif
 
             @can('update', $listing)
                 <div class="mt-5 flex gap-3">

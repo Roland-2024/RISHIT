@@ -22,7 +22,11 @@ class ListingResource extends JsonResource
                 'currency' => $this->currency->value,
                 'formatted' => $this->price()->format(),
             ],
-            'category' => ['slug' => $this->category->slug, 'name' => $this->category->label()],
+            'category' => [
+                'slug' => $this->category->slug,
+                'name' => $this->category->label(),
+                'labels' => $this->category->labels(),
+            ],
             'brand' => $this->brand ? ['slug' => $this->brand->slug, 'name' => $this->brand->name] : null,
             'seller' => ['username' => $this->user->username, 'name' => $this->user->name],
             'images' => $this->images->map(fn ($image) => [

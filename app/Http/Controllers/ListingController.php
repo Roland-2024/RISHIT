@@ -9,6 +9,7 @@ use App\Domain\Shared\Money;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Listing;
+use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -26,8 +27,7 @@ class ListingController extends Controller
     public function show(string $locale, Listing $listing): View
     {
         abort_if(
-            ($listing->status !== ListingStatus::Active || $listing->currency !== Currency::EUR)
-            && auth()->id() !== $listing->user_id,
+            ! $listing->isPubliclyVisible() && auth()->id() !== $listing->user_id,
             404
         );
 
@@ -133,7 +133,16 @@ class ListingController extends Controller
             'condition' => ['required', Rule::enum(ListingCondition::class)],
             'size' => ['nullable', 'string', 'max:40'],
             'color' => ['nullable', 'string', 'max:40'],
-            'price' => ['required', 'regex:/^\d{1,7}(?:[.,]\d{1,2})?$/'],
+            'price' => [
+                'bail',
+                'required',
+                'regex:/^\d{1,7}(?:[.,]\d{1,2})?$/',
+                function (string $attribute, mixed $value, Closure $fail): void {
+                    if (Money::fromDecimal((string) $value, Currency::EUR)->amount === 0) {
+                        $fail(__('catalog.validation.positive_price'));
+                    }
+                },
+            ],
             'photos' => [$listing ? 'nullable' : 'required', 'array', 'max:8'],
             'photos.*' => ['image', 'mimes:jpg,jpeg,png,webp', 'max:8192'],
         ];
