@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
+use App\Domain\Catalog\ListingImageStorage;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Facades\Storage;
 
 #[Fillable(['path', 'alt_text', 'sort_order'])]
 class ListingImage extends Model
@@ -17,6 +17,11 @@ class ListingImage extends Model
 
     public function url(): string
     {
-        return Storage::disk('public')->url($this->path);
+        return app(ListingImageStorage::class)->url($this->path);
+    }
+
+    protected static function booted(): void
+    {
+        static::deleted(fn (ListingImage $image) => app(ListingImageStorage::class)->delete($image->path));
     }
 }
