@@ -28,4 +28,6 @@ Listing collections accept `q`, `category`, `brand`, `condition`, optional `curr
 - Mutating money/inventory/external-provider endpoints will require idempotency semantics.
 - Breaking changes require a new API version; additive fields do not.
 
+Profile/address validation lives in reusable Laravel request classes, but authenticated account endpoints are intentionally deferred. A future `/api/v1` implementation must apply the same owner-only address policy and must not expose address or phone data through public profiles or listings.
+
 Do not create empty order/payment/auction endpoints before the corresponding behavior exists.

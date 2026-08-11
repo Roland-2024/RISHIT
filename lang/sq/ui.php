@@ -17,6 +17,7 @@ return [
         'logout' => 'Dil',
         'favorites' => 'Të preferuarat',
         'profile' => 'Profili',
+        'account' => 'Cilësimet',
         'my_listings' => 'Listimet e mia',
     ],
     'hero' => [

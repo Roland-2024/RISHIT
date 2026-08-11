@@ -9,6 +9,7 @@ RISHIT is a transactional C2C marketplace for second-hand fashion, launching in 
 - MySQL 8.4 and Redis via Docker Compose
 - Albanian (`/sq`) and English (`/en`) public routes
 - Web session authentication and Sanctum-ready users
+- Private profile settings and an owner-authorized Albania address book
 - EUR-only pricing stored as integer cents
 - €0 listing fees and €0 seller fees
 - Redis cache/queue configuration and a versioned `/api/v1/health` endpoint

@@ -52,6 +52,7 @@
                 @auth
                     <a href="{{ route('favorites.index') }}" class="rounded-full px-3 py-2 text-sm font-semibold hover:bg-ink/5">{{ __('ui.nav.favorites') }}</a>
                     <a href="{{ route('profiles.show', auth()->user()) }}" class="rounded-full px-3 py-2 text-sm font-semibold hover:bg-ink/5">{{ auth()->user()->username }}</a>
+                    <a href="{{ route('account.edit') }}" class="rounded-full px-3 py-2 text-sm font-semibold hover:bg-ink/5">{{ __('ui.nav.account') }}</a>
                     <a href="{{ route('listings.create') }}" class="rounded-full border border-forest px-4 py-2 text-sm font-bold text-forest hover:bg-forest hover:text-white">{{ __('ui.nav.sell') }}</a>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
@@ -79,6 +80,7 @@
                 <a href="{{ $localeUrl(app()->getLocale() === 'sq' ? 'en' : 'sq') }}" class="rounded-xl px-3 py-2 font-semibold">{{ app()->getLocale() === 'sq' ? 'English' : 'Shqip' }}</a>
                 @auth
                     <a href="{{ route('profiles.show', auth()->user()) }}" class="rounded-xl px-3 py-2 font-semibold">{{ __('ui.nav.profile') }}</a>
+                    <a href="{{ route('account.edit') }}" class="rounded-xl px-3 py-2 font-semibold">{{ __('ui.nav.account') }}</a>
                     <a href="{{ route('favorites.index') }}" class="rounded-xl px-3 py-2 font-semibold">{{ __('ui.nav.favorites') }}</a>
                     <a href="{{ route('my-listings.index') }}" class="rounded-xl px-3 py-2 font-semibold">{{ __('ui.nav.my_listings') }}</a>
                     <a href="{{ route('listings.create') }}" class="rounded-xl bg-forest px-3 py-2 font-bold text-white">{{ __('ui.nav.sell') }}</a>
