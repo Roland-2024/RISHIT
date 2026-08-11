@@ -40,3 +40,7 @@ Research completed on 2026-08-11 is recorded in
 all mandatory requirements for any candidate. Final provider: **UNRESOLVED**.
 Adapter implementation remains blocked pending written provider answers,
 commercial terms, and sandbox evidence.
+
+Counsel/provider decisions for contracting roles, loss/damage, returns, disputes,
+privacy, tax, public wording, and Kosovo are tracked in
+[LEGAL-READINESS.md](LEGAL-READINESS.md).

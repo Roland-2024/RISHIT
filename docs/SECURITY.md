@@ -33,4 +33,4 @@ Never store or log PAN, CVV, raw card input, POK secrets, or short-lived encrypt
 
 Addresses, phone numbers, messages, identity/KYC and dispute evidence need purpose-limited access, retention rules, export/deletion handling, and incident procedures before launch. Production must use HTTPS, secure cookies, secret rotation, backups/restore tests, monitoring, dependency scanning, and security headers.
 
-Legal/privacy/KYC/tax requirements for Albania and Kosovo remain outside technical assumption and require qualified review.
+Legal/privacy/KYC/tax requirements for Albania and Kosovo remain outside technical assumption and require qualified review. The open questions, evidence requirements, and reversible engineering boundaries are tracked in [LEGAL-READINESS.md](LEGAL-READINESS.md).

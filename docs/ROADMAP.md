@@ -2,7 +2,7 @@
 
 This is the authoritative source for numbered task scope, dependencies, status, and external blockers. Product-level sequencing in [MVP.md](MVP.md) remains useful context; when it conflicts with this file, this file controls task execution.
 
-Status snapshot: 2026-08-11. Tasks 02–10 were verified in `master` commit `43aa21b`; they are not missing work.
+Status snapshot: 2026-08-11. Task 01 was merged in `master` commit `f7f7705`. Tasks 02–10 were verified in `master` commit `43aa21b`; they are not missing work.
 
 ## Status rules and next action
 
@@ -12,7 +12,7 @@ Status snapshot: 2026-08-11. Tasks 02–10 were verified in `master` commit `43a
 - `REVIEW`: its pull request is ready but not merged; dependants must still wait.
 - `DONE`: verified work is merged into `master`.
 
-Task 01 is merged and `DONE`. **Task 11 — Production image hardening** is the single recommended next task and is `READY` on its implemented dependencies.
+Task 01 is merged and `DONE`. **Task 11 — Production image hardening** is the single recommended next implementation task and is `READY` on its implemented dependencies. External legal/provider evidence work may proceed without changing blocked implementation tasks to `READY`.
 
 ## Decision register
 
@@ -80,7 +80,7 @@ These are evidence gates, not implementation invitations. A blocker closes only 
 | B-PAY | POK must confirm EUR merchant enablement and amount units, marketplace/split/KYC/refund/settlement behavior, authorization/capture limits, webhook authentication/events/retries, idempotency, reconciliation, rate limits, and staging access. | 15–17, 20–23, 26, 29, 33, 35–36 |
 | B-COURIER | [Public-source research](COURIER-RESEARCH.md) is complete, but selection remains blocked. Select a courier only after verified Albania coverage/pricing, pickup/drop-off, API/sandbox, labels, tracking/events, idempotency/retrieval, failed delivery/returns, liability, privacy, and support terms. | 18–21, 26, 29, 35–36 |
 | B-RETURNS | Approve return eligibility/windows, condition/evidence standards, who pays shipping, failed/refused/lost parcel handling, partial/full refund rules, and dispute escalation. | 12, 18, 21–22, 35 |
-| B-LEGAL | Obtain qualified Albania review of marketplace terms, consumer/C2C obligations, privacy/retention, KYC/AML, tax/fiscal treatment, prohibited goods, custody/settlement/protection claims, dispute authority, and auction rules. Kosovo expansion requires its own review. | 12, 15, 18, 20–25, 27–30, 33–36 |
+| B-LEGAL | Close the applicable items in the counsel-review [Legal and Policy Readiness Checklist](LEGAL-READINESS.md): marketplace terms, consumer/C2C obligations, privacy/retention, KYC/AML, tax/fiscal treatment, prohibited goods, custody/settlement/protection claims, dispute authority, and auction rules. Kosovo expansion requires its own evidence set. | 12, 15, 18, 20–25, 27–30, 33–36 |
 | B-AUCTION | Approve increment tiers, bidder verification, payment deadline, failed-winner/cancellation behavior, and legal auction constraints. | 30–31, 33 |
 
 ## Dependency graph
