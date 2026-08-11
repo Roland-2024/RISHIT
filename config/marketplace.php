@@ -3,6 +3,7 @@
 return [
     'locales' => ['sq', 'en'],
     'default_currency' => 'EUR',
+    'listing_image_disk' => env('LISTING_IMAGE_DISK', 'public'),
 
     'auctions' => [
         'durations_hours' => [24, 72, 168],

@@ -25,7 +25,7 @@
 - Hidden, sold, soft-deleted, and legacy non-EUR listings remain available only where an authorized owner flow explicitly needs them; they never appear in public discovery.
 - Sellers alone can edit, hide, republish, or soft-delete their listings.
 - Listing condition uses a controlled set; seller descriptions must disclose wear and flaws.
-- A listing accepts at most eight validated JPG, PNG, or WebP images in explicit display order.
+- A listing accepts at most eight JPG, PNG, or WebP images in explicit display order. Each upload is at most 8 MB and between 320 and 4096 pixels on each side, then decoded and re-encoded once without metadata; no additional image variants are generated.
 - Availability checks, order creation, and reservation occur in a database transaction with locking/constraints; UI button state is never protection.
 - State transitions are explicit and reject invalid reversals.
 

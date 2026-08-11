@@ -29,7 +29,8 @@ API controllers ───┘
 - `Listing::filter()`: one filter/query implementation reused by Blade and `/api/v1`
 - `Listing::isPubliclyVisible()`: one availability decision reused by public detail and favorite endpoints
 - Listing policy: owners alone can edit, hide, republish, or soft-delete their listings
-- Laravel public storage: hashed upload names with validated image type, size, and count
+- `ListingImageStorage`: GD decoding/re-encoding with metadata removal, EXIF orientation normalization, bounded dimensions, and random object names
+- Laravel Storage on a configurable listing-image disk; local public storage is the default and S3-compatible disks use the same application path
 - Blade SSR: home feed, catalog, listing detail, seller profile, favorites, and listing management
 - Blade account settings: profile edits and an owner-authorized private address book in `sq` and `en`
 
