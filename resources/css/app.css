@@ -1,0 +1,31 @@
+@import 'tailwindcss';
+
+@source '../views/**/*.blade.php';
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+
+@theme {
+    --font-sans: Inter, ui-sans-serif, system-ui, sans-serif;
+    --color-sand: #f5f0e7;
+    --color-ink: #17211e;
+    --color-forest: #17483d;
+    --color-coral: #e86852;
+    --color-coral-dark: #c94e3c;
+    --color-lilac: #c9c1e8;
+}
+
+@layer base {
+    :focus-visible {
+        outline: 3px solid color-mix(in srgb, var(--color-coral) 65%, transparent);
+        outline-offset: 3px;
+    }
+
+    ::selection {
+        background: var(--color-lilac);
+        color: var(--color-ink);
+    }
+}
+
+[x-cloak] {
+    display: none !important;
+}
