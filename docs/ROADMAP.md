@@ -2,7 +2,7 @@
 
 This is the authoritative source for numbered task scope, dependencies, status, and external blockers. Product-level sequencing in [MVP.md](MVP.md) remains useful context; when it conflicts with this file, this file controls task execution.
 
-Status snapshot: 2026-08-11. Task 01 was merged in `master` commit `f7f7705`. Tasks 02–10 were verified in `master` commit `43aa21b`; they are not missing work.
+Status snapshot: 2026-08-11. Task 01 was merged in `master` commit `f7f7705`. Tasks 02–10 were verified in `master` commit `43aa21b`; they are not missing work. A later accounts/address request reused the already-merged Task 05 number; it is tracked below as supplemental Task 05A to preserve the catalog history.
 
 ## Status rules and next action
 
@@ -27,7 +27,7 @@ Task 01 is merged and `DONE`. **Task 11 — Production image hardening** is the 
 | D-07 | Confirmed | A listing is one unique physical item. Purchase, reservation, bidding, and auction closure require server-authoritative transactions, constraints, row locks, idempotency, and concurrency tests. |
 | D-08 | Confirmed | Vinted is a UX and product-flow reference only. RISHIT uses original text, code, assets, photography, trademarks, and visual identity. |
 
-## Tasks 01–36
+## Tasks 01–36 and supplemental Task 05A
 
 Blocker IDs refer to the external blocker register below. Acceptance criteria describe the smallest durable outcome for each task.
 
@@ -38,6 +38,7 @@ Blocker IDs refer to the external blocker register below. Acceptance criteria de
 | 03 | Localization and money foundation | 02 | DONE | `sq`/`en` routing and translations work; EUR money uses integer cents and explicit currency; legacy ALL display remains identifiable and private from public discovery. | — |
 | 04 | Identity and security baseline | 02 | DONE | One buyer/seller identity supports registration, login/logout, hashed passwords, session regeneration, throttling, unique credentials, and Sanctum-ready users. | — |
 | 05 | Catalog data foundation | 03, 04 | DONE | Categories, brands, unique-item listings, ordered images, favorites, factories, and deterministic seed data exist with explicit status/currency fields. | — |
+| 05A | Accounts and Albania addresses | 01, 04 | REVIEW | One buyer/seller account can edit its profile and privately manage validated Albania addresses through localized Blade UI and reusable request rules; KYC, checkout, and multi-country data are absent. | — |
 | 06 | Public SSR catalog and profiles | 05 | DONE | Blade renders home, catalog, listing, and seller pages; active EUR inventory supports shared search/filter/sort without JavaScript. | — |
 | 07 | Seller listing and photo management | 05, 06 | DONE | Owners can create, edit, hide, republish, and soft-delete EUR listings with validated ordered images and policy enforcement. | — |
 | 08 | Favorites | 04, 05, 06 | DONE | Authenticated users can add/remove unique favorites and view a private favorites page; hidden/deleted inventory stays out of public surfaces. | — |
@@ -91,6 +92,8 @@ flowchart TD
     T02 --> T04["04 Identity"]
     T03 --> T05["05 Catalog data"]
     T04 --> T05
+    T01 --> T05A["05A Accounts and addresses"]
+    T04 --> T05A
     T05 --> T06["06 Public catalog"]
     T05 --> T07["07 Listing management"]
     T06 --> T07

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccountSettingsController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\CatalogController;
@@ -34,6 +35,11 @@ Route::middleware(SetLocale::class)
 
         Route::middleware('auth')->group(function (): void {
             Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+            Route::get('/settings', [AccountSettingsController::class, 'edit'])->name('account.edit');
+            Route::put('/settings/profile', [AccountSettingsController::class, 'updateProfile'])->name('account.profile.update');
+            Route::post('/settings/addresses', [AccountSettingsController::class, 'storeAddress'])->name('account.addresses.store');
+            Route::put('/settings/addresses/{address}', [AccountSettingsController::class, 'updateAddress'])->name('account.addresses.update');
+            Route::delete('/settings/addresses/{address}', [AccountSettingsController::class, 'destroyAddress'])->name('account.addresses.destroy');
             Route::get('/sell', [ListingController::class, 'create'])->name('listings.create');
             Route::post('/items', [ListingController::class, 'store'])->name('listings.store');
             Route::get('/items/{listing}/edit', [ListingController::class, 'edit'])->name('listings.edit');
