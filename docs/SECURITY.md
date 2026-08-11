@@ -12,7 +12,8 @@
 - Authentication pages excluded from search indexing
 - API exceptions rendered as JSON
 - Owner-only listing policy for edit, visibility, and deletion
-- Image type/size/count validation, hashed storage names, and failed-write orphan cleanup
+- Image type/size/count/dimension validation; GD decoding and safe re-encoding remove metadata and normalize EXIF orientation
+- Random storage names, deterministic primary/display order, and cleanup after failed writes or image/listing deletion
 - Hidden and soft-deleted listings excluded from public catalog/API queries
 - Authenticated account settings with unique profile validation and no buyer/seller role split
 - Owner-only address-book policies; private addresses are absent from public profiles and public APIs
@@ -21,7 +22,6 @@
 ## Required controls by domain
 
 - Policies for offers, orders, auctions, messages, disputes, and admin actions
-- Image re-encoding and metadata stripping before production uploads
 - Transactions, row locks, uniqueness, and retry handling for unique inventory and bids
 - Verified webhook authentication, replay protection, stable provider event uniqueness, redacted logs, and safe retries
 - Least-privilege database, Redis, object storage, deployment, and provider credentials

@@ -12,7 +12,7 @@ Status snapshot: 2026-08-11. Task 01 was merged in `master` commit `f7f7705`. Ta
 - `REVIEW`: its pull request is ready but not merged; dependants must still wait.
 - `DONE`: verified work is merged into `master`.
 
-Task 01 and supplemental Tasks 05A and 06A are merged and `DONE`. **Task 11 — Production image hardening** remains the single recommended next implementation task and is `READY` on its implemented dependencies. External legal/provider evidence work may proceed without changing blocked implementation tasks to `READY`.
+Task 01 and supplemental Tasks 05A and 06A are merged and `DONE`. **Task 11 — Production image hardening** is in `REVIEW`; the current Task 07 delivery request maps to that existing roadmap outcome because the original Task 07 is already merged. External legal/provider evidence work may proceed without changing blocked implementation tasks to `READY`.
 
 ## Decision register
 
@@ -45,7 +45,7 @@ Blocker IDs refer to the external blocker register below. Acceptance criteria de
 | 08 | Favorites | 04, 05, 06 | DONE | Authenticated users can add/remove unique favorites and view a private favorites page; hidden/deleted inventory stays out of public surfaces. | — |
 | 09 | Read-only API foundation | 05, 06 | DONE | `/api/v1/health` and paginated listing endpoints return active EUR data, reuse catalog filters, and expose integer amounts with currency. | — |
 | 10 | SEO and public-page baseline | 03, 06 | DONE | Public SSR pages provide useful HTML, localized canonical/hreflang metadata, index controls, and original marketplace content without unsupported claims. | — |
-| 11 | Production image hardening | 07 | READY | Uploads are decoded/re-encoded, metadata is stripped, safe dimensions/limits are enforced, orphan cleanup remains reliable, and focused tests cover invalid files. | — |
+| 11 | Production image hardening | 07 | REVIEW | Uploads are decoded/re-encoded, metadata is stripped, safe dimensions/limits are enforced, orphan cleanup remains reliable, and focused tests cover invalid files. | — |
 | 12 | Fixed-price policy gate | 01, 03, 04 | BLOCKED | Approved record fixes buyer-side fee/protection policy, reservation/payment/cancellation windows, shipment deadline, return/dispute windows, and allowed customer claims. | B-FEE, B-RETURNS, B-LEGAL |
 | 13 | Order and unique-item reservation core | 12 | BLOCKED | A tested transaction locks one listing, snapshots parties/item facts, creates one order/reservation, and rejects duplicate purchase and invalid state transitions. | — |
 | 14 | Authoritative totals and fee snapshots | 12, 13 | BLOCKED | Shared code calculates EUR item, buyer fee, shipping, total, seller fees (both zero), and seller payable in cents and snapshots the policy/version. | B-FEE |
