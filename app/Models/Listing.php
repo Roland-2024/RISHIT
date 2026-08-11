@@ -52,6 +52,24 @@ class Listing extends Model
         return new Money($this->price_amount, $this->currency);
     }
 
+    public function publicUnavailabilityReason(): ?string
+    {
+        if ($this->trashed()) {
+            return 'deleted';
+        }
+
+        if ($this->currency !== Currency::EUR) {
+            return 'legacy_currency';
+        }
+
+        return $this->status === ListingStatus::Active ? null : $this->status->value;
+    }
+
+    public function isPubliclyVisible(): bool
+    {
+        return $this->publicUnavailabilityReason() === null;
+    }
+
     public function getRouteKeyName(): string
     {
         return 'slug';

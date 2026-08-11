@@ -8,10 +8,11 @@
 - JavaScript is not needed to read the public content.
 - Home, catalog, listing, and seller pages expose useful server-rendered content without JavaScript.
 - Search and facet URLs are useful to people but emit `noindex`; the base catalog remains indexable.
+- Database-driven category and brand landing pages expose active EUR inventory with localized canonical and reciprocal hreflang metadata.
 
 ## Planned indexable pages
 
-Listing and seller pages are implemented. Curated category/subcategory, brand, auction, and editorial/ending-soon landing pages remain planned. Product HTML contains title, description, price/currency, brand, category, condition, size, seller, availability context, and important links.
+Listing, seller, category, and brand pages are implemented. Curated auction and editorial/ending-soon landing pages remain planned. Product HTML contains title, description, price/currency, brand, category, condition, size, seller, availability context, and important links. Public listing routes return `404` for hidden, sold, deleted, and legacy non-EUR inventory; authorized owners receive a server-rendered unavailable explanation instead.
 
 ## URL and localization rules
 

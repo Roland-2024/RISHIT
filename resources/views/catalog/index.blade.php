@@ -1,8 +1,8 @@
-<x-layout :title="__('catalog.meta_title')" :description="__('catalog.meta_description')" :indexable="request()->query() === []">
+<x-layout :title="$metaTitle" :description="$metaDescription" :indexable="request()->query() === []">
     <section class="border-b border-ink/10 bg-white/50">
         <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
             <p class="text-xs font-black uppercase tracking-[0.24em] text-coral">{{ __('catalog.eyebrow') }}</p>
-            <h1 class="mt-3 max-w-3xl text-4xl font-black tracking-[-0.05em] text-forest sm:text-6xl">{{ __('catalog.title') }}</h1>
+            <h1 class="mt-3 max-w-3xl text-4xl font-black tracking-[-0.05em] text-forest sm:text-6xl">{{ $heading }}</h1>
         </div>
     </section>
 

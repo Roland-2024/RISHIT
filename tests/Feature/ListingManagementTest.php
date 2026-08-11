@@ -71,6 +71,23 @@ class ListingManagementTest extends TestCase
             ->assertForbidden();
     }
 
+    public function test_listing_price_must_be_greater_than_zero(): void
+    {
+        Storage::fake('public');
+        $seller = User::factory()->create();
+
+        $this->actingAs($seller)->post('/en/items', [
+            'title' => 'Free coat',
+            'description' => 'A coat described honestly but without a valid commerce price.',
+            'category_id' => Category::factory()->create()->id,
+            'condition' => 'good',
+            'price' => '0.00',
+            'photos' => [UploadedFile::fake()->image('coat.jpg', 800, 1000)],
+        ])->assertInvalid(['price']);
+
+        $this->assertDatabaseCount('listings', 0);
+    }
+
     public function test_favorites_are_idempotent_and_private(): void
     {
         $user = User::factory()->create();

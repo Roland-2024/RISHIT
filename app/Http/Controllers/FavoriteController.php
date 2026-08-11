@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Domain\Catalog\ListingStatus;
-use App\Domain\Shared\Currency;
 use App\Models\Listing;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -20,7 +18,7 @@ class FavoriteController extends Controller
 
     public function store(Request $request, string $locale, Listing $listing): RedirectResponse
     {
-        abort_unless($listing->status === ListingStatus::Active && $listing->currency === Currency::EUR, 404);
+        abort_unless($listing->isPubliclyVisible(), 404);
         $request->user()->favorites()->syncWithoutDetaching($listing->getKey());
 
         return back();

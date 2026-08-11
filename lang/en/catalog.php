@@ -3,6 +3,10 @@
 return [
     'meta_title' => 'Browse pre-loved fashion — RISHIT',
     'meta_description' => 'Search original second-hand listings from sellers across Albania.',
+    'category_meta_title' => ':category second-hand fashion — RISHIT',
+    'category_meta_description' => 'Browse active EUR listings in :category from sellers across Albania.',
+    'brand_meta_title' => 'Pre-loved :brand fashion — RISHIT',
+    'brand_meta_description' => 'Browse active EUR :brand listings from sellers across Albania.',
     'title' => 'Find the piece that fits your story.',
     'eyebrow' => 'RISHIT catalog',
     'results' => ':count items',
@@ -40,6 +44,12 @@ return [
     'color' => 'Color',
     'no_brand' => 'No brand',
     'buy_unavailable' => 'Checkout becomes available after payment and shipping validation.',
+    'unavailable' => [
+        'hidden' => 'This listing is hidden and unavailable to buyers.',
+        'sold' => 'This item is sold and unavailable to buyers.',
+        'deleted' => 'This listing was deleted and is unavailable to buyers.',
+        'legacy_currency' => 'This legacy non-EUR listing is unavailable to buyers.',
+    ],
     'sell_title' => 'Give an item its next story',
     'edit_title' => 'Edit your listing',
     'my_listings' => 'My listings',
@@ -86,5 +96,6 @@ return [
     ],
     'validation' => [
         'photo_limit' => 'A listing can have no more than 8 photos.',
+        'positive_price' => 'The price must be greater than zero.',
     ],
 ];

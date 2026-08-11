@@ -21,6 +21,8 @@ Route::middleware(SetLocale::class)
     ->group(function (): void {
         Route::get('/', HomeController::class)->name('home');
         Route::get('/catalog', CatalogController::class)->name('catalog.index');
+        Route::get('/categories/{category:slug}', [CatalogController::class, 'category'])->name('categories.show');
+        Route::get('/brands/{brand:slug}', [CatalogController::class, 'brand'])->name('brands.show');
         Route::get('/items/{listing}', [ListingController::class, 'show'])->name('listings.show');
         Route::get('/members/{user}', ProfileController::class)->name('profiles.show');
 

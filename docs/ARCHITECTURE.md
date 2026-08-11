@@ -27,6 +27,7 @@ API controllers ───┘
 - `app/Domain/Catalog`: listing condition/status values and shared filter validation
 - `app/Models`: categories, brands, unique-item listings, ordered images, and a favorites pivot
 - `Listing::filter()`: one filter/query implementation reused by Blade and `/api/v1`
+- `Listing::isPubliclyVisible()`: one availability decision reused by public detail and favorite endpoints
 - Listing policy: owners alone can edit, hide, republish, or soft-delete their listings
 - Laravel public storage: hashed upload names with validated image type, size, and count
 - Blade SSR: home feed, catalog, listing detail, seller profile, favorites, and listing management
@@ -53,7 +54,7 @@ These boundaries are documented, not empty code scaffolds. Provider contracts wi
 
 ## Current database
 
-Foundation tables are joined by `categories`, `brands`, `listings`, `listing_images`, and `favorites`. Listings are soft-deleted, carry explicit condition/status/currency values, and represent one unique physical item. New and publicly visible listings are EUR; legacy non-EUR rows remain preserved and private. Commerce tables do not exist yet.
+Foundation tables are joined by `categories`, `brands`, `listings`, `listing_images`, and `favorites`. Listings are soft-deleted, carry explicit condition/status/currency values, and represent one unique physical item. New and publicly visible listings are positive-price EUR inventory; legacy non-EUR rows remain preserved and private. Composite indexes support current public newest and price-sorted queries. Commerce tables do not exist yet.
 
 ## Decision log
 

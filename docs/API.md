@@ -17,7 +17,7 @@ GET /api/v1/listings/{slug}
 }
 ```
 
-Listing collections accept `q`, `category`, `brand`, `condition`, optional `currency=EUR`, `min_price`, `max_price`, and `sort` (`newest`, `price_asc`, `price_desc`). They return only active EUR listings with pagination `links` and `meta`. Amounts are integer cents with explicit currency. Any other currency is rejected. The framework renders exceptions as JSON for `/api/*`. Sanctum is installed and the user model supports API tokens, but public mobile login/token and mutation endpoints are not implemented until their threat model and client flow are defined.
+Listing collections accept `q`, `category`, `brand`, `condition`, optional `currency=EUR`, `min_price`, `max_price`, and `sort` (`newest`, `price_asc`, `price_desc`). They return only active EUR listings with pagination `links` and `meta`. Amounts are integer cents with explicit currency. Category resources include stable `sq` and `en` labels while listing title and description remain the seller's original text. Any other currency is rejected. The framework renders exceptions as JSON for `/api/*`. Sanctum is installed and the user model supports API tokens, but public mobile login/token and mutation endpoints are not implemented until their threat model and client flow are defined.
 
 ## Conventions
 
