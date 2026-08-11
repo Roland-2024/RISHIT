@@ -33,6 +33,14 @@ Use this checklist before selecting a courier. Do not code an adapter until requ
 
 ## Selection output
 
-Record verified capabilities, missing requirements, pricing examples in EUR, API documents, sandbox evidence, support contacts, and a go/no-go decision. Final provider: **UNRESOLVED**.
+Record verified capabilities, missing requirements, pricing examples in EUR, API documents, sandbox evidence, support contacts, and a go/no-go decision.
 
-Counsel/provider decisions for contracting roles, loss/damage, returns, disputes, privacy, tax, public wording, and Kosovo are tracked in [LEGAL-READINESS.md](LEGAL-READINESS.md).
+Research completed on 2026-08-11 is recorded in
+[COURIER-RESEARCH.md](COURIER-RESEARCH.md). The public evidence does not verify
+all mandatory requirements for any candidate. Final provider: **UNRESOLVED**.
+Adapter implementation remains blocked pending written provider answers,
+commercial terms, and sandbox evidence.
+
+Counsel/provider decisions for contracting roles, loss/damage, returns, disputes,
+privacy, tax, public wording, and Kosovo are tracked in
+[LEGAL-READINESS.md](LEGAL-READINESS.md).
