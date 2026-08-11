@@ -30,6 +30,16 @@ class User extends Authenticatable
         return $this->hasMany(Address::class);
     }
 
+    public function purchases(): HasMany
+    {
+        return $this->hasMany(Order::class, 'buyer_id');
+    }
+
+    public function sales(): HasMany
+    {
+        return $this->hasMany(Order::class, 'seller_id');
+    }
+
     public function favorites(): BelongsToMany
     {
         return $this->belongsToMany(Listing::class, 'favorites')->withTimestamps();
@@ -50,6 +60,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_admin' => 'boolean',
         ];
     }
 }

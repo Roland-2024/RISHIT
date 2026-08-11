@@ -32,11 +32,12 @@
 ## Payments and settlement
 
 - RISHIT charges sellers EUR 0 to list and EUR 0 when an item sells.
+- Buyer fee policy `buyer_fee_none_v1` charges EUR 0, has no tax, displays EUR 0, and refunds EUR 0. A future buyer charge requires a separately approved version and cannot rewrite historical orders.
 - Backend-calculated totals and verified provider events are authoritative.
 - Card data and reusable raw card payloads are never stored or logged.
 - Duplicate, delayed, retried, and out-of-order provider events are expected.
 - RISHIT must not claim escrow or legal custody of funds without provider and legal confirmation.
-- Seller settlement timing, KYC, Buyer Protection or other buyer-side fees, and split/refund behavior remain unresolved.
+- Seller settlement timing, KYC, Buyer Protection, and provider split/refund behavior remain unresolved.
 
 ## Shipping
 

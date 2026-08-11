@@ -1,8 +1,11 @@
 <?php
 
+use App\Domain\Commerce\BuyerFeePolicy;
+
 return [
     'locales' => ['sq', 'en'],
     'default_currency' => 'EUR',
+    'buyer_fee_policy' => BuyerFeePolicy::NoFeeV1->value,
 
     'auctions' => [
         'durations_hours' => [24, 72, 168],

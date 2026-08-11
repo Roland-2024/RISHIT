@@ -6,7 +6,7 @@ RISHIT is a transactional C2C marketplace for second-hand fashion. Albania is th
 
 RISHIT keeps discovery, payment, shipping, delivery, settlement eligibility, reviews, and disputes inside one accountable marketplace journey. It is not a classifieds site for exchanging phone numbers and arranging private payment.
 
-Sellers pay €0 to list and €0 when an item sells. Any future buyer-side charge must be separately defined and shown before purchase.
+Sellers pay €0 to list and €0 when an item sells. Approved buyer fee policy `buyer_fee_none_v1` is also €0, with no tax and a €0 refund; any future buyer-side charge requires a separately approved version shown before purchase.
 
 The reliable loop is:
 
