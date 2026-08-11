@@ -16,6 +16,8 @@ API controllers ───┘
 - `app/Http/Middleware/SetLocale`: URL-controlled `sq`/`en` locale
 - `app/Http/Controllers/Auth`: minimal native web session auth
 - `app/Models/User`: one buyer/seller identity with Sanctum token support
+- `app/Models/Address`: private, owner-scoped Albania address-book records; country is fixed to `AL`
+- `app/Http/Requests`: reusable profile and address validation for Blade now and authenticated `/api/v1` controllers later
 - `resources/views`: server-rendered original design and auth pages
 - `routes/api.php`: versioned health and read-only listing resources
 - `config/marketplace.php`: stable `sq`/`en` locales, EUR-only marketplace currency, and initial auction timing defaults
@@ -28,6 +30,7 @@ API controllers ───┘
 - Listing policy: owners alone can edit, hide, republish, or soft-delete their listings
 - Laravel public storage: hashed upload names with validated image type, size, and count
 - Blade SSR: home feed, catalog, listing detail, seller profile, favorites, and listing management
+- Blade account settings: profile edits and an owner-authorized private address book in `sq` and `en`
 
 ## Planned domain boundaries
 

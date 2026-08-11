@@ -17,6 +17,7 @@ return [
         'logout' => 'Log out',
         'favorites' => 'Favorites',
         'profile' => 'Profile',
+        'account' => 'Settings',
         'my_listings' => 'My listings',
     ],
     'hero' => [

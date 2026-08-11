@@ -6,7 +6,10 @@
             <p class="mt-3 text-sand/65">{{ __('catalog.member_since', ['date' => $seller->created_at->translatedFormat('F Y')]) }}</p>
             @auth
                 @if (auth()->user()->is($seller))
-                    <a href="{{ route('my-listings.index') }}" class="mt-5 inline-block rounded-full bg-sand px-5 py-2.5 font-bold text-forest">{{ __('catalog.my_listings') }}</a>
+                    <div class="mt-5 flex flex-wrap gap-3">
+                        <a href="{{ route('my-listings.index') }}" class="inline-block rounded-full bg-sand px-5 py-2.5 font-bold text-forest">{{ __('catalog.my_listings') }}</a>
+                        <a href="{{ route('account.edit') }}" class="inline-block rounded-full border border-sand/40 px-5 py-2.5 font-bold text-sand">{{ __('ui.nav.account') }}</a>
+                    </div>
                 @endif
             @endauth
         </section>
