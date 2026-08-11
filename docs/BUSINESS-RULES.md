@@ -8,6 +8,7 @@
 
 ## Money
 
+- The checked-in EUR decision supersedes older planning-prompt requirements for ALL. ALL is supported only as identifiable legacy data, not for new public listings or marketplace transactions.
 - New listings and all future marketplace transactions use EUR only.
 - All internal amounts are signed integer cents with explicit `EUR` currency; `5200` means `€52.00`.
 - Historical non-EUR records are preserved for audit and owner access, excluded from public discovery, and never relabeled or converted without an explicit migration policy.
@@ -28,7 +29,7 @@
 
 ## Payments and settlement
 
-- RISHIT charges sellers no listing fee and no selling fee.
+- RISHIT charges sellers EUR 0 to list and EUR 0 when an item sells.
 - Backend-calculated totals and verified provider events are authoritative.
 - Card data and reusable raw card payloads are never stored or logged.
 - Duplicate, delayed, retried, and out-of-order provider events are expected.

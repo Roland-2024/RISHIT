@@ -29,6 +29,8 @@ Vinted is the product benchmark for familiar marketplace information architectur
 - Language changes content, never the marketplace currency
 - User-generated listing content always preserves its original text and language
 
+These checked-in decisions supersede older planning-prompt requirements for ALL. ALL remains historical/legacy data context only: preserve existing records, keep them out of public discovery, and do not relabel or convert them without an approved migration policy.
+
 ## Current implementation
 
 Phases 1 and 2 provide the original public shell, localization, authentication, catalog discovery, seller profiles, favorites, listing/photo management, Docker services, and read-only listing APIs. No payment, shipping, order, offer, auction, messaging, or review flow is represented as complete.
