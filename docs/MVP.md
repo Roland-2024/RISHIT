@@ -12,7 +12,7 @@ seller lists → buyer discovers → backend locks item → buyer pays → selle
 
 1. **Foundation — implemented:** Laravel/Blade, Docker, MySQL, Redis, Tailwind/Alpine, localization, session auth, Sanctum readiness, money presentation, docs, and `/api/v1` convention.
 2. **Catalog — implemented:** categories, brands, seller profiles, listings/images, favorites, search/filtering, owner visibility controls, SSR pages, and read-only API resources.
-3. **Commerce core:** immutable money snapshots, fees, orders, payment abstraction, POK adapter, provider events, idempotency, and financial audit records.
+3. **Commerce core:** provider-neutral order snapshots, zero-fee policy, and normalized transitions are implemented; payment abstraction, POK adapter, provider events, idempotency, and financial audit records remain later work.
 4. **Shipping:** selected courier adapter, quotes/snapshots, shipment lifecycle, tracking events, returns foundation.
 5. **Fixed-price transaction:** production-quality Buy Now through delivery and completion.
 6. **Offers:** accepted offers reuse the fixed-price commerce path.
@@ -23,7 +23,7 @@ seller lists → buyer discovers → backend locks item → buyer pays → selle
 
 ## Explicitly outside Phase 1
 
-Production payment/courier integrations, marketplace tables, dynamic fees, escrow claims, admin frameworks, Livewire, Horizon, Reverb, advanced search, microservices, analytics platforms, and Flutter.
+Production checkout/payment/courier integrations, dynamic fees, escrow claims, admin interfaces, Livewire, Horizon, Reverb, advanced search, microservices, analytics platforms, and Flutter.
 
 ## MVP success
 

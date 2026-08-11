@@ -16,9 +16,10 @@ RISHIT is a transactional C2C marketplace for second-hand fashion, launching in 
 - Database-backed categories, brands, listings, ordered photos, favorites, and seller profiles
 - Localized catalog search/filtering and owner listing management
 - Read-only `/api/v1/listings` collection and item endpoints
+- Provider-neutral orders with immutable EUR totals, party/address/item snapshots, explicit states, and transition history
 - PHPUnit 12 tests
 
-Payments, shipping, orders, offers, auctions, messaging, reviews, and moderation are not implemented yet. See [docs/MVP.md](docs/MVP.md).
+Checkout, payments, shipping workflows, offers, auctions, messaging, reviews, and moderation are not implemented yet. See [docs/MVP.md](docs/MVP.md).
 
 ## Requirements
 
@@ -85,7 +86,7 @@ Copy `.env.example`, never commit `.env`, and keep credentials outside source co
 - `REDIS_*`: cache and queue service
 - `APP_PORT`, `VITE_PORT`, `FORWARD_DB_PORT`, `FORWARD_REDIS_PORT`: host ports
 
-Marketplace defaults that are safe to define now live in `config/marketplace.php`. Albanian and English content share one EUR-only marketplace process with no listing or seller fees. Buyer-side fees, payout timing, dispute periods, and courier pricing remain unresolved and are not hardcoded.
+Marketplace defaults that are safe to define now live in `config/marketplace.php`. Albanian and English content share one EUR-only marketplace process with no listing, seller, or buyer fees under versioned policy `buyer_fee_none_v1`. Payout timing, Buyer Protection claims, dispute periods, and courier pricing remain unresolved and are not hardcoded.
 
 ## Architecture
 

@@ -1,8 +1,11 @@
 <?php
 
+use App\Domain\Commerce\BuyerFeePolicy;
+
 return [
     'locales' => ['sq', 'en'],
     'default_currency' => 'EUR',
+    'buyer_fee_policy' => BuyerFeePolicy::NoFeeV1->value,
     'listing_image_disk' => env('LISTING_IMAGE_DISK', 'public'),
 
     'auctions' => [

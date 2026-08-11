@@ -141,15 +141,16 @@ This table uses the product task numbers in [ROADMAP.md](ROADMAP.md). `DONE` des
 | Task | Legal/policy impact | Gate |
 | --- | --- | --- |
 | 08 — Favorites | Existing private-feature scope stays complete. Account/favorites notice, retention, export, and deletion remain part of the launch privacy gate. | L-15–L-21 before production launch (Task 35); does not reopen Task 08. |
+| 08A — Order and fee domain | Internal provider-neutral records implement approved zero-fee policy `buyer_fee_none_v1`; no checkout, public fee claim, payment, shipping, refund, or settlement behavior is exposed. | L-15–L-21 for snapshot retention/staff access and L-33–L-42 before checkout or public fee claims. |
 | 09 — Read-only API | No direct commerce gate. Future authenticated/mobile data use must follow approved privacy and rights handling. | L-15–L-21 before authenticated expansion (Task 36). |
 | 10 — SEO baseline | Existing pages avoid unsupported claims. New commerce, protection, seller-verification, auction, and Kosovo SEO copy cannot precede approval. | Public-claims gate below; later Task 34 remains blocked by `B-LEGAL`. |
 | 11 — Image hardening | No direct legal blocker to technical image safety. Image/listing retention, prohibited goods, IP reports, and moderation rules remain later gates. | L-17–L-18 and L-43–L-47 before Tasks 28/35, not before Task 11. |
-| 12 — Fixed-price policy gate | Direct legal blocker: contracting, consumer/returns, fee/protection, claims, and transaction windows must be approved. | `B-LEGAL`, `B-FEE`, and `B-RETURNS`; L-01–L-14 and L-33–L-37. |
+| 12 — Fixed-price policy gate | Direct legal blocker: contracting, consumer/returns, protection claims, and transaction windows must be approved. | `B-LEGAL` and `B-RETURNS`; L-01–L-14 and L-33–L-37. |
 | 13 — Order/reservation core | Transitively blocked by Task 12. Snapshot content and retention must not invent legal requirements. | Task 12 first; L-04, L-17–L-18, and approved policy/version fields. |
-| 14 — Totals/fee snapshots | Transitively blocked by Task 12 and directly by the unresolved buyer fee/tax treatment. | `B-FEE`; L-33–L-42 before fee calculation is finalized. |
+| 14 — Totals/fee snapshots | Policy `buyer_fee_none_v1` is defined and snapshotted; Task 14 remains transitively blocked by Task 12 for the full checkout policy. | L-33–L-42 before checkout or public fee claims. |
 | 15 — POK validation | Direct provider/legal blocker: marketplace approval, roles, KYC, custody, settlement, refund, and payout wording need written evidence. | `B-PAY` and `B-LEGAL`; L-22–L-32 plus [POK-MARKETPLACE-RESEARCH.md](POK-MARKETPLACE-RESEARCH.md). |
 | 16 — Payment integration | Direct provider/legal blocker. An API shape is not authorization to operate the proposed marketplace money flow. | Tasks 14/15 plus `B-PAY` and `B-LEGAL`; L-27–L-32 and L-38–L-41. |
-| 17 — Fixed-price checkout | Transitively blocked through Tasks 12, 14, and 16; checkout copy also needs approved price, rights, payment, and remedy disclosures. | `B-FEE`, `B-PAY`, and upstream legal gates; L-06, L-10–L-14, L-30, and L-33–L-42. |
+| 17 — Fixed-price checkout | Transitively blocked through Tasks 12, 14, and 16; checkout copy also needs approved price, rights, payment, and remedy disclosures. | `B-PAY` and upstream legal gates; L-06, L-10–L-14, L-30, and L-33–L-42. |
 
 ## Claims that must not appear publicly yet
 

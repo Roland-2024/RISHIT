@@ -34,10 +34,17 @@ API controllers ───┘
 - Blade SSR: home feed, catalog, listing detail, seller profile, favorites, and listing management
 - Blade account settings: profile edits and an owner-authorized private address book in `sq` and `en`
 
+## Implemented commerce foundation
+
+- Provider-neutral orders with immutable item, party, address, EUR amount, and fee-policy snapshots
+- Shared application actions for transaction-safe order creation and explicit normalized state transitions
+- Buyer, seller, and administrative order access through Laravel policy discovery
+- Append-only transition history; no checkout, provider calls, payment records, shipment workflow, accounting ledger, or seller-settlement claim
+
 ## Planned domain boundaries
 
 - **Catalog:** implemented; moderation and richer category metadata remain later work
-- **Commerce:** orders, item reservation, fees, state transitions, snapshots
+- **Commerce:** foundational orders, item reservation, fees, state transitions, and snapshots are implemented; checkout and exceptional-policy workflows remain later work
 - **Payments:** internal payment states/events plus a POK adapter
 - **Shipping:** internal shipment states/events plus a selected courier adapter
 - **Auctions:** auctions, bids, locking, increments, anti-sniping, closure
@@ -55,7 +62,7 @@ These boundaries are documented, not empty code scaffolds. Provider contracts wi
 
 ## Current database
 
-Foundation tables are joined by `categories`, `brands`, `listings`, `listing_images`, and `favorites`. Listings are soft-deleted, carry explicit condition/status/currency values, and represent one unique physical item. New and publicly visible listings are positive-price EUR inventory; legacy non-EUR rows remain preserved and private. Composite indexes support current public newest and price-sorted queries. Commerce tables do not exist yet.
+Foundation tables are joined by `categories`, `brands`, `listings`, `listing_images`, `favorites`, `orders`, and `order_transitions`. Listings are soft-deleted, carry explicit condition/status/currency values, and represent one unique physical item. New and publicly visible listings are positive-price EUR inventory; legacy non-EUR rows remain preserved and private. Composite indexes support current public and participant order queries.
 
 ## Decision log
 

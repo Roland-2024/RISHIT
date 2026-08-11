@@ -1,0 +1,145 @@
+<?php
+
+namespace App\Application\Commerce;
+
+use App\Domain\Catalog\ListingStatus;
+use App\Domain\Commerce\BuyerFeePolicy;
+use App\Domain\Commerce\OrderAmounts;
+use App\Domain\Commerce\OrderState;
+use App\Domain\Shared\Money;
+use App\Models\Address;
+use App\Models\Listing;
+use App\Models\Order;
+use App\Models\OrderTransition;
+use App\Models\User;
+use DomainException;
+use Illuminate\Support\Facades\DB;
+
+final class CreateOrder
+{
+    public function __invoke(
+        Listing $listing,
+        User $buyer,
+        Address $buyerAddress,
+        Address $sellerAddress,
+        Money $authoritativeShipping,
+    ): Order {
+        return DB::transaction(function () use ($listing, $buyer, $buyerAddress, $sellerAddress, $authoritativeShipping): Order {
+            $listing = Listing::query()
+                ->withTrashed()
+                ->with(['brand', 'category'])
+                ->lockForUpdate()
+                ->findOrFail($listing->getKey());
+            $buyer = User::query()->lockForUpdate()->findOrFail($buyer->getKey());
+            $seller = User::query()->lockForUpdate()->findOrFail($listing->user_id);
+            $buyerAddress = Address::query()->lockForUpdate()->findOrFail($buyerAddress->getKey());
+            $sellerAddress = Address::query()->lockForUpdate()->findOrFail($sellerAddress->getKey());
+
+            if (! $listing->isPubliclyVisible()) {
+                throw new DomainException('Only active EUR listings can become orders.');
+            }
+
+            if ($buyer->is($seller)) {
+                throw new DomainException('A seller cannot buy their own listing.');
+            }
+
+            if ($buyerAddress->user_id !== $buyer->getKey() || $sellerAddress->user_id !== $seller->getKey()) {
+                throw new DomainException('Order addresses must belong to the buyer and seller.');
+            }
+
+            $policy = BuyerFeePolicy::from(config('marketplace.buyer_fee_policy'));
+            $amounts = OrderAmounts::forListing($listing, $authoritativeShipping, $policy);
+            $now = now();
+
+            $order = new Order;
+            $order->forceFill([
+                'listing_id' => $listing->getKey(),
+                'buyer_id' => $buyer->getKey(),
+                'seller_id' => $seller->getKey(),
+                'state' => OrderState::Created,
+                'currency' => $amounts->currency,
+                'item_amount' => $amounts->item,
+                'shipping_amount' => $amounts->shipping,
+                'buyer_fee_amount' => $amounts->buyerFee,
+                'seller_fee_amount' => $amounts->sellerFee,
+                'total_amount' => $amounts->total,
+                'seller_payable_amount' => $amounts->sellerPayable,
+                'buyer_fee_policy_version' => $policy,
+                'fee_policy_snapshot' => [
+                    'buyer' => $policy->snapshot(),
+                    'seller_listing_fee_amount' => 0,
+                    'seller_selling_fee_amount' => 0,
+                    'currency' => $amounts->currency->value,
+                ],
+                'item_snapshot' => $this->itemSnapshot($listing),
+                'buyer_snapshot' => $this->userSnapshot($buyer),
+                'seller_snapshot' => $this->userSnapshot($seller),
+                'buyer_address_snapshot' => $this->addressSnapshot($buyerAddress),
+                'seller_address_snapshot' => $this->addressSnapshot($sellerAddress),
+                'state_changed_at' => $now,
+            ])->save();
+
+            $transition = new OrderTransition;
+            $transition->forceFill([
+                'order_id' => $order->getKey(),
+                'actor_id' => $buyer->getKey(),
+                'from_state' => null,
+                'to_state' => OrderState::Created,
+                'occurred_at' => $now,
+            ])->save();
+
+            $listing->forceFill(['status' => ListingStatus::Sold])->save();
+
+            return $order->refresh();
+        }, 3);
+    }
+
+    /** @return array<string, mixed> */
+    private function itemSnapshot(Listing $listing): array
+    {
+        return [
+            'id' => $listing->getKey(),
+            'slug' => $listing->slug,
+            'title' => $listing->title,
+            'description' => $listing->description,
+            'condition' => $listing->condition->value,
+            'size' => $listing->size,
+            'color' => $listing->color,
+            'category' => $listing->category ? [
+                'id' => $listing->category->getKey(),
+                'name_sq' => $listing->category->name_sq,
+                'name_en' => $listing->category->name_en,
+            ] : null,
+            'brand' => $listing->brand ? [
+                'id' => $listing->brand->getKey(),
+                'name' => $listing->brand->name,
+            ] : null,
+        ];
+    }
+
+    /** @return array<string, int|string> */
+    private function userSnapshot(User $user): array
+    {
+        return [
+            'id' => $user->getKey(),
+            'name' => $user->name,
+            'username' => $user->username,
+            'email' => $user->email,
+        ];
+    }
+
+    /** @return array<string, int|string> */
+    private function addressSnapshot(Address $address): array
+    {
+        return [
+            'id' => $address->getKey(),
+            'label' => $address->label,
+            'recipient_name' => $address->recipient_name,
+            'phone' => $address->phone,
+            'street' => $address->street,
+            'city' => $address->city,
+            'postal_code' => $address->postal_code,
+            'country_code' => $address->country_code,
+        ];
+    }
+}

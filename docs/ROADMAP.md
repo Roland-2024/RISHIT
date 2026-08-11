@@ -2,7 +2,7 @@
 
 This is the authoritative source for numbered task scope, dependencies, status, and external blockers. Product-level sequencing in [MVP.md](MVP.md) remains useful context; when it conflicts with this file, this file controls task execution.
 
-Status snapshot: 2026-08-11. Task 01 was merged in `master` commit `f7f7705`. Tasks 02–10 were verified in `master` commit `43aa21b`; they are not missing work. Later requests reused the already-merged Task 05 and Task 06 numbers; they are tracked below as supplemental Tasks 05A and 06A to preserve the catalog history. Both supplemental tasks are merged and verified.
+Status snapshot: 2026-08-11. Task 01 was merged in `master` commit `f7f7705`. Tasks 02–10 were verified in `master` commit `43aa21b`; they are not missing work. Later requests reused already-merged task numbers; they are tracked as supplemental Tasks 05A, 06A, and 08A to preserve the catalog history. Tasks 05A and 06A are merged and verified; Task 08A is in review.
 
 ## Status rules and next action
 
@@ -12,7 +12,7 @@ Status snapshot: 2026-08-11. Task 01 was merged in `master` commit `f7f7705`. Ta
 - `REVIEW`: its pull request is ready but not merged; dependants must still wait.
 - `DONE`: verified work is merged into `master`.
 
-Task 01 and supplemental Tasks 05A and 06A are merged and `DONE`. **Task 11 — Production image hardening** is in `REVIEW`; the current Task 07 delivery request maps to that existing roadmap outcome because the original Task 07 is already merged. External legal/provider evidence work may proceed without changing blocked implementation tasks to `READY`.
+Task 01, Task 11, and supplemental Tasks 05A and 06A are merged and `DONE`. Supplemental **Task 08A — Order and fee domain** is in `REVIEW`. The Task 07 delivery request mapped to Task 11 because the original Task 07 was already merged. External legal/provider evidence work may proceed without changing blocked implementation tasks to `READY`.
 
 ## Decision register
 
@@ -21,13 +21,13 @@ Task 01 and supplemental Tasks 05A and 06A are merged and `DONE`. **Task 11 — 
 | D-01 | Confirmed | Checked-in product documentation is authoritative. Older attached planning prompts remain historical context but are superseded where they conflict with this register, [PRODUCT.md](PRODUCT.md), or [BUSINESS-RULES.md](BUSINESS-RULES.md). |
 | D-02 | Confirmed | Public customer UI supports Albanian (`sq`) and English (`en`). User-authored content is preserved in its original language. |
 | D-03 | Confirmed | New public listings and marketplace transactions use EUR only, stored as integer cents with explicit currency. Older requirements for ALL are superseded. Existing ALL support/records are legacy context only: preserve and exclude them from public discovery; do not relabel or convert them without an approved migration policy. |
-| D-04 | Confirmed | Seller listing fee is EUR 0 and seller selling fee is EUR 0. Buyer-side fees, including any Buyer Protection charge, are unresolved and must not be invented. |
+| D-04 | Confirmed | Seller listing fee, seller selling fee, and buyer fee policy `buyer_fee_none_v1` are EUR 0. The buyer policy has no tax, displays EUR 0, and refunds EUR 0; a future charge requires a new approved version and cannot rewrite existing order snapshots. No Buyer Protection claim is approved. |
 | D-05 | Confirmed | RISHIT is a transactional C2C marketplace, not an off-platform classifieds flow. Payment, escrow/custody, settlement, protection, courier, return, and dispute claims require matching provider, policy, and legal evidence. |
 | D-06 | Confirmed | Keep the modular Laravel monolith, Blade-rendered essential public content, and versioned `/api/v1`; web and API controllers reuse application/domain rules. |
 | D-07 | Confirmed | A listing is one unique physical item. Purchase, reservation, bidding, and auction closure require server-authoritative transactions, constraints, row locks, idempotency, and concurrency tests. |
 | D-08 | Confirmed | Vinted is a UX and product-flow reference only. RISHIT uses original text, code, assets, photography, trademarks, and visual identity. |
 
-## Tasks 01–36 and supplemental Tasks 05A and 06A
+## Tasks 01–36 and supplemental Tasks 05A, 06A, and 08A
 
 Blocker IDs refer to the external blocker register below. Acceptance criteria describe the smallest durable outcome for each task.
 
@@ -43,22 +43,23 @@ Blocker IDs refer to the external blocker register below. Acceptance criteria de
 | 06A | Catalog completion audit | 01 | DONE | Existing catalog behavior is preserved; active EUR inventory is consistent across SSR and `/api/v1`, category/brand landings are indexable, and unavailable inventory stays private. | — |
 | 07 | Seller listing and photo management | 05, 06 | DONE | Owners can create, edit, hide, republish, and soft-delete EUR listings with validated ordered images and policy enforcement. | — |
 | 08 | Favorites | 04, 05, 06 | DONE | Authenticated users can add/remove unique favorites and view a private favorites page; hidden/deleted inventory stays out of public surfaces. | — |
+| 08A | Order and fee domain | 04, 05, 06 | REVIEW | Provider-neutral orders snapshot parties, addresses, item facts, approved EUR fee policy and authoritative totals; shared actions enforce normalized transitions and participant/admin access without checkout, payment, shipment, or settlement claims. | — |
 | 09 | Read-only API foundation | 05, 06 | DONE | `/api/v1/health` and paginated listing endpoints return active EUR data, reuse catalog filters, and expose integer amounts with currency. | — |
 | 10 | SEO and public-page baseline | 03, 06 | DONE | Public SSR pages provide useful HTML, localized canonical/hreflang metadata, index controls, and original marketplace content without unsupported claims. | — |
-| 11 | Production image hardening | 07 | REVIEW | Uploads are decoded/re-encoded, metadata is stripped, safe dimensions/limits are enforced, orphan cleanup remains reliable, and focused tests cover invalid files. | — |
-| 12 | Fixed-price policy gate | 01, 03, 04 | BLOCKED | Approved record fixes buyer-side fee/protection policy, reservation/payment/cancellation windows, shipment deadline, return/dispute windows, and allowed customer claims. | B-FEE, B-RETURNS, B-LEGAL |
+| 11 | Production image hardening | 07 | DONE | Uploads are decoded/re-encoded, metadata is stripped, safe dimensions/limits are enforced, orphan cleanup remains reliable, and focused tests cover invalid files. | — |
+| 12 | Fixed-price policy gate | 01, 03, 04 | BLOCKED | Approved record fixes buyer-side fee/protection policy, reservation/payment/cancellation windows, shipment deadline, return/dispute windows, and allowed customer claims. | B-RETURNS, B-LEGAL |
 | 13 | Order and unique-item reservation core | 12 | BLOCKED | A tested transaction locks one listing, snapshots parties/item facts, creates one order/reservation, and rejects duplicate purchase and invalid state transitions. | — |
-| 14 | Authoritative totals and fee snapshots | 12, 13 | BLOCKED | Shared code calculates EUR item, buyer fee, shipping, total, seller fees (both zero), and seller payable in cents and snapshots the policy/version. | B-FEE |
+| 14 | Authoritative totals and fee snapshots | 12, 13 | BLOCKED | Shared code calculates EUR item, buyer fee, shipping, total, seller fees (both zero), and seller payable in cents and snapshots the policy/version. | — |
 | 15 | POK validation and go/no-go | 01, 12 | BLOCKED | Staging evidence and written answers close the required POK checklist; provider/legal fit is recorded as go/no-go before an adapter or SDK is added. | B-PAY, B-LEGAL |
 | 16 | Payment integration and reconciliation | 14, 15 | BLOCKED | A provider boundary supports required POK operations; verified idempotent events/retrieval drive normalized payment/refund state and auditable financial records without card data. | B-PAY, B-LEGAL |
-| 17 | Fixed-price checkout | 13, 14, 16 | BLOCKED | Blade and `/api/v1` use the same server-authoritative checkout service; duplicate requests cannot oversell or misstate EUR totals/payment state. | B-FEE, B-PAY |
+| 17 | Fixed-price checkout | 13, 14, 16 | BLOCKED | Blade and `/api/v1` use the same server-authoritative checkout service; duplicate requests cannot oversell or misstate EUR totals/payment state. | B-PAY |
 | 18 | Courier validation and selection | 01, 13 | BLOCKED | One provider has verified Albania coverage, EUR pricing, API/sandbox, tracking, returns, liability/privacy terms, and a documented go/no-go decision. | B-COURIER, B-RETURNS, B-LEGAL |
 | 19 | Shipping quote, label, and tracking integration | 18 | BLOCKED | Provider-neutral shipment states wrap the selected courier; quote/service/price are snapshotted; create/cancel/events/retrieval are idempotent and tested. | B-COURIER |
 | 20 | Fixed-price transaction completion | 17, 19 | BLOCKED | One item can move safely from checkout through verified payment, shipment, delivery, and completion with recovery paths and a complete audit trail. | B-PAY, B-COURIER, B-LEGAL |
 | 21 | Return policy and workflow | 19, 20 | BLOCKED | Approved eligibility, timing, evidence, shipping-cost, refund, and terminal-state rules are implemented once in shared code and covered by lifecycle tests. | B-RETURNS, B-PAY, B-COURIER, B-LEGAL |
 | 22 | Disputes and resolution | 16, 20, 21 | BLOCKED | Approved dispute reasons, evidence access, deadlines, authority, refund outcomes, and audit events are enforced without unsupported protection claims. | B-RETURNS, B-PAY, B-LEGAL |
 | 23 | Settlement eligibility and payout reconciliation | 16, 20, 22 | BLOCKED | Provider/legal rules determine auditable seller eligibility, payout/reversal state, and reconciliation; delivery alone never fabricates settlement. | B-PAY, B-LEGAL |
-| 24 | Offers | 20 | BLOCKED | Seller-defined acceptance/expiry rules produce an immutable EUR price and route accepted offers through the same inventory, checkout, and order services. | B-FEE, B-LEGAL |
+| 24 | Offers | 20 | BLOCKED | Seller-defined acceptance/expiry rules produce an immutable EUR price and route accepted offers through the same inventory, checkout, and order services. | B-LEGAL |
 | 25 | Transaction messaging | 04, 20 | BLOCKED | Authorized participants can exchange retained, reportable messages tied to marketplace context; access, rate limits, privacy, and moderation hooks are tested. | B-LEGAL |
 | 26 | Async notifications and recovery jobs | 16, 19, 25 | BLOCKED | Transactional notifications and provider recovery jobs are queued, retry-safe, deduplicated, localized, and never treated as authoritative state. | B-PAY, B-COURIER |
 | 27 | Reviews and reputation | 20, 22 | BLOCKED | Only eligible completed-order participants can create one review per role/order; moderation and aggregate updates are auditable. | B-LEGAL |
@@ -78,7 +79,7 @@ These are evidence gates, not implementation invitations. A blocker closes only 
 
 | ID | Open decision or evidence required | Blocks |
 | --- | --- | --- |
-| B-FEE | Approve whether any buyer-side/Buyer Protection fee exists, its value/tax/display/refund treatment, and policy version. Seller listing and selling fees remain fixed at EUR 0 regardless. | 12, 14, 17, 24 |
+| B-FEE | **Closed 2026-08-11:** buyer fee policy `buyer_fee_none_v1` is EUR 0, has no tax, displays EUR 0, and refunds EUR 0. Seller listing and selling fees remain EUR 0. A future charge requires a new approved version; no Buyer Protection claim is approved. | — |
 | B-PAY | POK must confirm EUR merchant enablement and amount units, marketplace/split/KYC/refund/settlement behavior, authorization/capture limits, webhook authentication/events/retries, idempotency, reconciliation, rate limits, and staging access. | 15–17, 20–23, 26, 29, 33, 35–36 |
 | B-COURIER | [Public-source research](COURIER-RESEARCH.md) is complete, but selection remains blocked. Select a courier only after verified Albania coverage/pricing, pickup/drop-off, API/sandbox, labels, tracking/events, idempotency/retrieval, failed delivery/returns, liability, privacy, and support terms. | 18–21, 26, 29, 35–36 |
 | B-RETURNS | Approve return eligibility/windows, condition/evidence standards, who pays shipping, failed/refused/lost parcel handling, partial/full refund rules, and dispute escalation. | 12, 18, 21–22, 35 |
@@ -102,6 +103,9 @@ flowchart TD
     T04 --> T08["08 Favorites"]
     T05 --> T08
     T06 --> T08
+    T04 --> T08A["08A Order and fee domain"]
+    T05 --> T08A
+    T06 --> T08A
     T05 --> T09["09 Read API"]
     T06 --> T09
     T03 --> T10["10 SEO baseline"]

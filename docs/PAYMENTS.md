@@ -17,6 +17,7 @@ This design will be created with the first real commerce use case, not as empty 
 ## Safety invariants
 
 - Seller listing and selling fees are fixed at zero; payment implementation cannot introduce them through client or provider input.
+- Buyer fee policy `buyer_fee_none_v1` is fixed at EUR 0 with no tax and a EUR 0 refund. Future buyer charges require a separately approved policy version.
 - Server derives EUR amount, fees, and order linkage; clients cannot select a currency.
 - Card numbers, CVV, raw reusable card data, keys, and secrets are never persisted/logged.
 - Create/capture/cancel/refund/webhook operations require idempotency keys or equivalent local uniqueness.
@@ -26,6 +27,6 @@ This design will be created with the first real commerce use case, not as empty 
 
 ## Open decisions
 
-POK marketplace approval, seller/KYC/account requirements, split/refund behavior, authorization hold duration, capture/payout timing, buyer-side funding, Buyer Protection fee, dispute period, tax/fiscal treatment, and Kosovo support.
+POK marketplace approval, seller/KYC/account requirements, provider split/refund behavior, authorization hold duration, capture/payout timing, buyer-side funding, Buyer Protection claims, dispute period, tax/fiscal treatment, and Kosovo support.
 
 See [POK-MARKETPLACE-RESEARCH.md](POK-MARKETPLACE-RESEARCH.md) for provider evidence and [LEGAL-READINESS.md](LEGAL-READINESS.md) for the counsel/provider decision gates and prohibited public claims.
