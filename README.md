@@ -86,13 +86,21 @@ Copy `.env.example`, never commit `.env`, and keep credentials outside source co
 - `REDIS_*`: cache and queue service
 - `APP_PORT`, `VITE_PORT`, `FORWARD_DB_PORT`, `FORWARD_REDIS_PORT`: host ports
 
-Marketplace defaults that are safe to define now live in `config/marketplace.php`. Albanian and English content share one EUR-only marketplace process with no listing, seller, or buyer fees under versioned policy `buyer_fee_none_v1`. Payout timing, Buyer Protection claims, dispute periods, and courier pricing remain unresolved and are not hardcoded.
+Marketplace defaults that are safe to define now live in `config/marketplace.php`. Albanian and English content share one EUR-only marketplace process with no listing, seller, or buyer fees under versioned policy `buyer_fee_none_v1`. No Buyer Protection proposition is approved. Payout timing, dispute periods, and courier pricing remain unresolved and are not hardcoded.
+
+[The fixed-price policy record](docs/FIXED-PRICE-POLICY.md) defines future
+reservation and cancellation defaults without enabling checkout: 15 minutes for
+instant online payment, 24 hours for a verified platform-account bank transfer,
+one-minute idempotent expiry cleanup, and five calendar days for seller handoff.
+Direct buyer-to-seller transfer is prohibited, and COD remains a disabled courier
+candidate. Public fee or transaction marketing still requires applicable legal
+and provider approval.
 
 ## Architecture
 
 RISHIT is a modular Laravel monolith. Blade and future API controllers must call the same application/domain logic. Public indexable content remains server-rendered. Provider-specific payment and shipping data will stay at adapter boundaries once real integrations exist; no speculative interfaces or fake providers are present today.
 
-Start with [docs/ROADMAP.md](docs/ROADMAP.md) for task readiness, [docs/LEGAL-READINESS.md](docs/LEGAL-READINESS.md) for counsel/provider gates, then [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), [docs/BUSINESS-RULES.md](docs/BUSINESS-RULES.md), and [AGENTS.md](AGENTS.md).
+Start with [docs/ROADMAP.md](docs/ROADMAP.md) for task readiness, [docs/FIXED-PRICE-POLICY.md](docs/FIXED-PRICE-POLICY.md) for the approved reservation boundary, [docs/LEGAL-READINESS.md](docs/LEGAL-READINESS.md) for counsel/provider gates, then [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), [docs/BUSINESS-RULES.md](docs/BUSINESS-RULES.md), and [AGENTS.md](AGENTS.md).
 
 ## Troubleshooting
 

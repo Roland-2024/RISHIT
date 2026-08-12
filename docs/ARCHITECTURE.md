@@ -44,7 +44,7 @@ API controllers ───┘
 ## Planned domain boundaries
 
 - **Catalog:** implemented; moderation and richer category metadata remain later work
-- **Commerce:** foundational orders, item reservation, fees, state transitions, and snapshots are implemented; checkout and exceptional-policy workflows remain later work
+- **Commerce:** foundational orders, unique-listing exclusion, fees, state transitions, and snapshots are implemented; the versioned reservation/expiry core, checkout, and exceptional-policy workflows remain later work
 - **Payments:** internal payment states/events plus a POK adapter
 - **Shipping:** internal shipment states/events plus a selected courier adapter
 - **Auctions:** auctions, bids, locking, increments, anti-sniping, closure

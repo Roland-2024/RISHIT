@@ -32,7 +32,7 @@
 
 ## Payment boundaries
 
-Never store or log PAN, CVV, raw card input, POK secrets, or short-lived encrypted payloads beyond immediate exchange. Browser callbacks cannot mark an order paid. Payment, refund, payout, and settlement state requires authenticated provider evidence and reconciliation.
+Never store or log PAN, CVV, raw card input, POK secrets, or short-lived encrypted payloads beyond immediate exchange. Browser callbacks, screenshots, receipts, user assertions, and seller bank statements cannot mark an order paid. Payment, refund, payout, and settlement state requires authenticated provider evidence and reconciliation. Direct buyer-to-seller bank transfer is prohibited.
 
 ## Privacy and operations
 

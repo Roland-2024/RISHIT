@@ -25,6 +25,10 @@ seller lists → buyer discovers → backend locks item → buyer pays → selle
 
 Production checkout/payment/courier integrations, dynamic fees, escrow claims, admin interfaces, Livewire, Horizon, Reverb, advanced search, microservices, analytics platforms, and Flutter.
 
+Future reservation, cancellation, late-payment, and seller-handoff behavior is
+defined in [FIXED-PRICE-POLICY.md](FIXED-PRICE-POLICY.md). The record does not
+enable any payment or courier method.
+
 ## MVP success
 
 Correctness, traceability, trust, and completion rate matter more than feature count. No next feature outranks a broken payment/shipping/order loop.
