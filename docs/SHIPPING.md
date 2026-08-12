@@ -2,6 +2,11 @@
 
 No courier has been selected and no production shipping integration exists.
 
+Cash on Delivery is therefore not approved or available. It remains a candidate
+only if the selected courier verifies the full C2C collection, remittance,
+reconciliation, failed/refused parcel, return, liability, privacy, and support
+workflow in EUR.
+
 ## Provider decision
 
 The 2026-08-11 Albania launch research produced a **NO-GO on provider
@@ -36,5 +41,15 @@ Likely normalized states: pending, ready for pickup, picked up, in transit, out 
 - Client assertions never directly set authoritative delivery.
 - A missed webhook must be recoverable through provider retrieval/synchronization.
 - Shipping failures preserve payment/order audit history.
+- The approved engineering default is seller handoff within five calendar days
+  of verified payment, or of COD acceptance if COD is later approved. Missing the
+  deadline does not fabricate a refund: online/bank-funded orders enter the
+  verified cancellation/refund workflow, COD orders cancel, and the listing stays
+  hidden until the seller reconfirms availability.
+
+Return eligibility, failed/refused/unclaimed parcel outcomes, dispute authority,
+refund scope, liability, and customer remedies remain courier/counsel/provider
+gates. See [FIXED-PRICE-POLICY.md](FIXED-PRICE-POLICY.md) for the fixed-price
+boundary.
 
 See [SHIPPING-PROVIDER-REQUIREMENTS.md](SHIPPING-PROVIDER-REQUIREMENTS.md).

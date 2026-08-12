@@ -8,12 +8,16 @@ RISHIT keeps discovery, payment, shipping, delivery, settlement eligibility, rev
 
 Sellers pay €0 to list and €0 when an item sells. Approved buyer fee policy `buyer_fee_none_v1` is also €0, with no tax and a €0 refund; any future buyer-side charge requires a separately approved version shown before purchase.
 
+No Buyer Protection service or claim is approved. Public marketing of the zero
+buyer fee still requires applicable legal approval; the approved internal fee
+policy may be stated accurately in product and engineering records.
+
 The reliable loop is:
 
 1. A seller lists one physical item.
 2. A buyer discovers and purchases it.
 3. The backend confirms availability and authoritative totals.
-4. A licensed provider processes payment.
+4. An approved provider confirms payment through authoritative evidence.
 5. The seller follows tracked shipping instructions.
 6. Delivery and any dispute window complete.
 7. Seller settlement occurs only under confirmed provider/legal rules.
@@ -33,4 +37,6 @@ These checked-in decisions supersede older planning-prompt requirements for ALL.
 
 ## Current implementation
 
-Phases 1 and 2 provide the original public shell, localization, authentication, catalog discovery, seller profiles, favorites, listing/photo management, Docker services, and read-only listing APIs. No payment, shipping, order, offer, auction, messaging, or review flow is represented as complete.
+Phases 1 and 2 provide the original public shell, localization, authentication, catalog discovery, seller profiles, favorites, listing/photo management, Docker services, and read-only listing APIs. A provider-neutral internal order/fee foundation is also present, but no checkout, payment, shipping, offer, auction, messaging, or review flow is represented as complete.
+
+Future fixed-price behavior is governed by [the approved policy record](FIXED-PRICE-POLICY.md). Instant online payment is the primary candidate. Platform-account bank transfer and COD are disabled candidates with separate evidence gates; direct buyer-to-seller bank transfer is not part of the product.

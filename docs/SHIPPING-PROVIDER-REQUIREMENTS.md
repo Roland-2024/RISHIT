@@ -29,7 +29,7 @@ Use this checklist before selecting a courier. Do not code an adapter until requ
 - Who may buy the label and who is shipper of record
 - Prohibited goods and fashion-specific restrictions
 - Personal-data controller/processor roles
-- COD availability is informational only; it must not undermine the transactional marketplace design
+- COD is a launch candidate, not an approved method. A candidate must additionally verify C2C eligibility, EUR collection/pricing, API and reconciliation, cash remittance, failed/refused delivery, returns, liability, privacy, and support without undermining the transactional marketplace design.
 
 ## Selection output
 

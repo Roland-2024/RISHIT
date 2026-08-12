@@ -28,6 +28,9 @@
 - A listing accepts at most eight JPG, PNG, or WebP images in explicit display order. Each upload is at most 8 MB and between 320 and 4096 pixels on each side, then decoded and re-encoded once without metadata; no additional image variants are generated.
 - Availability checks, order creation, and reservation occur in a database transaction with locking/constraints; UI button state is never protection.
 - State transitions are explicit and reject invalid reversals.
+- Fixed-price reservation, expiry, cancellation, and listing outcomes follow versioned policy [`fixed_price_v1`](FIXED-PRICE-POLICY.md). Instant online payment uses 15 minutes; an approved platform-account bank transfer would use 24 hours; retries never extend either deadline.
+- Due reservations are rechecked under a row lock by an idempotent one-minute cleanup. Late payment confirmation enters reconciliation and never revives released inventory.
+- Before authoritative payment, the buyer, system, or an audited admin may cancel as defined by policy; the seller cannot cancel directly. Post-payment and post-handoff cancellation requires the later verified provider/legal workflow.
 
 ## Payments and settlement
 
@@ -37,7 +40,10 @@
 - Card data and reusable raw card payloads are never stored or logged.
 - Duplicate, delayed, retried, and out-of-order provider events are expected.
 - RISHIT must not claim escrow or legal custody of funds without provider and legal confirmation.
-- Seller settlement timing, KYC, Buyer Protection, and provider split/refund behavior remain unresolved.
+- No Buyer Protection proposition is approved. Seller settlement timing, KYC, and provider split/refund behavior remain unresolved.
+- Direct buyer-to-seller bank transfer is prohibited. A buyer bank transfer may be considered only to a platform/provider-controlled account with a unique order reference and authoritative retrieval/reconciliation; screenshots and user assertions are never proof.
+- COD is a disabled launch candidate until a courier verifies C2C support, EUR pricing, API/reconciliation, collection/remittance, failed/refused delivery, returns, liability, privacy, and support.
+- Prefer provider-hosted seller onboarding/KYC/payout details. Never request seller bank statements. If payout coordinates must later be stored, Task 23 must minimize, encrypt, mask, authorize, retain, and audit them.
 
 ## Shipping
 
@@ -45,6 +51,7 @@
 - Provider-specific statuses map to internal shipment states.
 - Client or seller assertions cannot directly mark a shipment delivered.
 - Courier, pricing, returns, and cross-border rules remain unresolved.
+- The engineering default is courier handoff within five calendar days of verified payment, or approved COD acceptance. Seller non-shipment enters the appropriate verified cancellation/refund path; the listing stays hidden until availability is confirmed.
 
 ## Auctions
 

@@ -24,9 +24,27 @@ This design will be created with the first real commerce use case, not as empty 
 - Provider events may duplicate, delay, retry, or arrive out of order.
 - Frontend success callbacks are UX signals only; backend retrieval/webhook confirmation controls payment state.
 - Settlement and Buyer Protection claims must match licensed-provider and legal capabilities.
+- No Buyer Protection proposition is currently approved.
+- Direct buyer-to-seller bank transfer is prohibited. A buyer transfer is a candidate only to a platform/provider-controlled account with an immutable unique order reference and authoritative retrieval/reconciliation. Screenshots, receipts, and buyer/seller assertions are not payment proof.
+- Sellers are not asked for bank statements. Prefer provider-hosted onboarding, KYC, and payout details; any later RISHIT-stored payout coordinates are a Task 23 privacy/security decision.
+
+## Candidate methods
+
+- **Instant online payment:** primary candidate; a future local reservation lasts
+  15 minutes and verified provider evidence alone confirms payment.
+- **Platform-account bank transfer:** acceptable candidate only when ownership,
+  EUR processing, unique references, authoritative retrieval, reconciliation,
+  refunds, privacy, and support are verified. Its approved engineering default is
+  a 24-hour reservation because it is not assumed to share the online timeout.
+- **Cash on Delivery:** launch candidate only, disabled until a selected courier
+  confirms C2C service, EUR pricing, APIs/reconciliation, cash collection and
+  remittance, failed/refused delivery, returns, liability, privacy, and support.
+
+Reservation expiry, retry, cancellation, late-confirmation, and bilingual wording
+are authoritative in [FIXED-PRICE-POLICY.md](FIXED-PRICE-POLICY.md).
 
 ## Open decisions
 
-POK marketplace approval, seller/KYC/account requirements, provider split/refund behavior, authorization hold duration, capture/payout timing, buyer-side funding, Buyer Protection claims, dispute period, tax/fiscal treatment, and Kosovo support.
+POK marketplace approval, seller/KYC/account requirements, provider split/refund behavior, authorization hold duration, capture/payout timing, funding-method enablement, any future Buyer Protection proposition, dispute period, tax/fiscal treatment, and Kosovo support.
 
 See [POK-MARKETPLACE-RESEARCH.md](POK-MARKETPLACE-RESEARCH.md) for provider evidence and [LEGAL-READINESS.md](LEGAL-READINESS.md) for the counsel/provider decision gates and prohibited public claims.
