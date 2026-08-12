@@ -6,6 +6,7 @@ use App\Domain\Commerce\OrderState;
 use App\Models\Order;
 use App\Models\OrderTransition;
 use App\Models\User;
+use DomainException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 
@@ -18,6 +19,14 @@ final class TransitionOrder
 
             if ($actor) {
                 Gate::forUser($actor)->authorize('view', $order);
+            }
+
+            if (in_array($next, [OrderState::Cancelled, OrderState::Expired], true)) {
+                throw new DomainException('Reservation cancellation and expiry require their dedicated actions.');
+            }
+
+            if ($next === OrderState::Paid && $actor !== null) {
+                throw new DomainException('A participant cannot confirm payment.');
             }
 
             $order->state->assertCanTransitionTo($next);

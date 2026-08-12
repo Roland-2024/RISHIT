@@ -8,6 +8,8 @@ enum OrderState: string
 {
     case Created = 'created';
     case AwaitingPayment = 'awaiting_payment';
+    case Cancelled = 'cancelled';
+    case Expired = 'expired';
     case Paid = 'paid';
     case AwaitingShipment = 'awaiting_shipment';
     case Shipped = 'shipped';
@@ -17,17 +19,22 @@ enum OrderState: string
     public function assertCanTransitionTo(self $next): void
     {
         $allowed = match ($this) {
-            self::Created => self::AwaitingPayment,
-            self::AwaitingPayment => self::Paid,
-            self::Paid => self::AwaitingShipment,
-            self::AwaitingShipment => self::Shipped,
-            self::Shipped => self::Delivered,
-            self::Delivered => self::Completed,
-            self::Completed => null,
+            self::Created => [self::AwaitingPayment, self::Cancelled, self::Expired],
+            self::AwaitingPayment => [self::Paid, self::Cancelled, self::Expired],
+            self::Paid => [self::AwaitingShipment],
+            self::AwaitingShipment => [self::Shipped],
+            self::Shipped => [self::Delivered],
+            self::Delivered => [self::Completed],
+            self::Cancelled, self::Expired, self::Completed => [],
         };
 
-        if ($next !== $allowed) {
+        if (! in_array($next, $allowed, true)) {
             throw new DomainException("Invalid order transition from {$this->value} to {$next->value}.");
         }
+    }
+
+    public function isAwaitingPayment(): bool
+    {
+        return $this === self::Created || $this === self::AwaitingPayment;
     }
 }

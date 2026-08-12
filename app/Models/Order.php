@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Domain\Commerce\BuyerFeePolicy;
 use App\Domain\Commerce\OrderState;
+use App\Domain\Commerce\ReservationProfile;
 use App\Domain\Shared\Currency;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -18,6 +19,10 @@ class Order extends Model
         'listing_id',
         'buyer_id',
         'seller_id',
+        'idempotency_key',
+        'reservation_profile',
+        'reservation_started_at',
+        'reservation_expires_at',
         'currency',
         'item_amount',
         'shipping_amount',
@@ -69,6 +74,8 @@ class Order extends Model
     {
         return [
             'state' => OrderState::class,
+            'reservation_profile' => ReservationProfile::class,
+            'inventory_claim' => 'boolean',
             'currency' => Currency::class,
             'item_amount' => 'integer',
             'shipping_amount' => 'integer',
@@ -84,6 +91,8 @@ class Order extends Model
             'buyer_address_snapshot' => 'array',
             'seller_address_snapshot' => 'array',
             'state_changed_at' => 'immutable_datetime',
+            'reservation_started_at' => 'immutable_datetime',
+            'reservation_expires_at' => 'immutable_datetime',
         ];
     }
 }

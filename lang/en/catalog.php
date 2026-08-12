@@ -46,6 +46,7 @@ return [
     'buy_unavailable' => 'Checkout becomes available after payment and shipping validation.',
     'unavailable' => [
         'hidden' => 'This listing is hidden and unavailable to buyers.',
+        'reserved' => 'This item is reserved and unavailable to buyers.',
         'sold' => 'This item is sold and unavailable to buyers.',
         'deleted' => 'This listing was deleted and is unavailable to buyers.',
         'legacy_currency' => 'This legacy non-EUR listing is unavailable to buyers.',
@@ -86,6 +87,7 @@ return [
     'status_labels' => [
         'active' => 'Published',
         'hidden' => 'Hidden',
+        'reserved' => 'Reserved',
         'sold' => 'Sold',
     ],
     'flash' => [

@@ -6,6 +6,7 @@ use App\Domain\Catalog\ListingStatus;
 use App\Domain\Commerce\BuyerFeePolicy;
 use App\Domain\Commerce\OrderAmounts;
 use App\Domain\Commerce\OrderState;
+use App\Domain\Commerce\ReservationProfile;
 use App\Domain\Shared\Money;
 use App\Models\Address;
 use App\Models\Listing;
@@ -23,14 +24,30 @@ final class CreateOrder
         Address $buyerAddress,
         Address $sellerAddress,
         Money $authoritativeShipping,
+        string $idempotencyKey,
     ): Order {
-        return DB::transaction(function () use ($listing, $buyer, $buyerAddress, $sellerAddress, $authoritativeShipping): Order {
+        if (trim($idempotencyKey) === '' || strlen($idempotencyKey) > 64) {
+            throw new DomainException('An idempotency key of at most 64 characters is required.');
+        }
+
+        return DB::transaction(function () use ($listing, $buyer, $buyerAddress, $sellerAddress, $authoritativeShipping, $idempotencyKey): Order {
+            $buyer = User::query()->lockForUpdate()->findOrFail($buyer->getKey());
+
+            $existing = Order::query()
+                ->where('buyer_id', $buyer->getKey())
+                ->where('idempotency_key', $idempotencyKey)
+                ->lockForUpdate()
+                ->first();
+
+            if ($existing) {
+                return $this->retry($existing, $listing, $buyerAddress, $sellerAddress, $authoritativeShipping);
+            }
+
             $listing = Listing::query()
                 ->withTrashed()
                 ->with(['brand', 'category'])
                 ->lockForUpdate()
                 ->findOrFail($listing->getKey());
-            $buyer = User::query()->lockForUpdate()->findOrFail($buyer->getKey());
             $seller = User::query()->lockForUpdate()->findOrFail($listing->user_id);
             $buyerAddress = Address::query()->lockForUpdate()->findOrFail($buyerAddress->getKey());
             $sellerAddress = Address::query()->lockForUpdate()->findOrFail($sellerAddress->getKey());
@@ -49,14 +66,20 @@ final class CreateOrder
 
             $policy = BuyerFeePolicy::from(config('marketplace.buyer_fee_policy'));
             $amounts = OrderAmounts::forListing($listing, $authoritativeShipping, $policy);
-            $now = now();
+            $profile = ReservationProfile::FixedPriceOnlineV1;
+            $now = now()->toImmutable();
 
             $order = new Order;
             $order->forceFill([
                 'listing_id' => $listing->getKey(),
                 'buyer_id' => $buyer->getKey(),
                 'seller_id' => $seller->getKey(),
+                'idempotency_key' => $idempotencyKey,
                 'state' => OrderState::Created,
+                'reservation_profile' => $profile,
+                'reservation_started_at' => $now,
+                'reservation_expires_at' => $now->addMinutes($profile->durationMinutes()),
+                'inventory_claim' => true,
                 'currency' => $amounts->currency,
                 'item_amount' => $amounts->item,
                 'shipping_amount' => $amounts->shipping,
@@ -85,13 +108,39 @@ final class CreateOrder
                 'actor_id' => $buyer->getKey(),
                 'from_state' => null,
                 'to_state' => OrderState::Created,
+                'reason' => 'reservation_created',
+                'listing_status' => ListingStatus::Reserved->value,
                 'occurred_at' => $now,
             ])->save();
 
-            $listing->forceFill(['status' => ListingStatus::Sold])->save();
+            $listing->forceFill(['status' => ListingStatus::Reserved])->save();
 
             return $order->refresh();
         }, 3);
+    }
+
+    private function retry(
+        Order $order,
+        Listing $listing,
+        Address $buyerAddress,
+        Address $sellerAddress,
+        Money $shipping,
+    ): Order {
+        if (
+            $order->listing_id !== $listing->getKey()
+            || $order->buyer_address_snapshot['id'] !== $buyerAddress->getKey()
+            || $order->seller_address_snapshot['id'] !== $sellerAddress->getKey()
+            || $order->shipping_amount !== $shipping->amount
+            || $order->currency !== $shipping->currency
+        ) {
+            throw new DomainException('The idempotency key was already used for different order inputs.');
+        }
+
+        if (! $order->inventory_claim || ($order->state->isAwaitingPayment() && $order->reservation_expires_at->lessThanOrEqualTo(now()))) {
+            throw new DomainException('The idempotency key belongs to a stale reservation.');
+        }
+
+        return $order->refresh();
     }
 
     /** @return array<string, mixed> */

@@ -37,14 +37,16 @@ API controllers ───┘
 ## Implemented commerce foundation
 
 - Provider-neutral orders with immutable item, party, address, EUR amount, and fee-policy snapshots
-- Shared application actions for transaction-safe order creation and explicit normalized state transitions
+- Shared application actions for buyer-key-idempotent order creation, pre-payment cancellation, row-locked expiry/release, and explicit normalized state transitions
 - Buyer, seller, and administrative order access through Laravel policy discovery
-- Append-only transition history; no checkout, provider calls, payment records, shipment workflow, accounting ledger, or seller-settlement claim
+- One active inventory claim per listing through a MySQL unique constraint; released cancelled/expired attempts remain immutable history
+- Fixed `fixed_price_v1_online` reservation timestamps and an every-minute retry-safe cleanup command with third-failure operational logging
+- Append-only reason/actor/listing-outcome transition history; no checkout, provider calls, payment records, shipment workflow, accounting ledger, or seller-settlement claim
 
 ## Planned domain boundaries
 
 - **Catalog:** implemented; moderation and richer category metadata remain later work
-- **Commerce:** foundational orders, unique-listing exclusion, fees, state transitions, and snapshots are implemented; the versioned reservation/expiry core, checkout, and exceptional-policy workflows remain later work
+- **Commerce:** foundational orders, unique-listing exclusion, fees, snapshots, and the 15-minute reservation/expiry/pre-payment cancellation core are implemented; checkout and exceptional-policy workflows remain later work
 - **Payments:** internal payment states/events plus a POK adapter
 - **Shipping:** internal shipment states/events plus a selected courier adapter
 - **Auctions:** auctions, bids, locking, increments, anti-sniping, closure
@@ -62,7 +64,7 @@ These boundaries are documented, not empty code scaffolds. Provider contracts wi
 
 ## Current database
 
-Foundation tables are joined by `categories`, `brands`, `listings`, `listing_images`, `favorites`, `orders`, and `order_transitions`. Listings are soft-deleted, carry explicit condition/status/currency values, and represent one unique physical item. New and publicly visible listings are positive-price EUR inventory; legacy non-EUR rows remain preserved and private. Composite indexes support current public and participant order queries.
+Foundation tables are joined by `categories`, `brands`, `listings`, `listing_images`, `favorites`, `orders`, and `order_transitions`. Listings are soft-deleted, carry explicit condition/status/currency values, and represent one unique physical item. Orders carry a buyer-scoped idempotency key, immutable reservation profile/start/deadline, and nullable active inventory claim. New and publicly visible listings are positive-price EUR inventory with no active claim; legacy non-EUR rows remain preserved and private. Composite indexes support public, participant, idempotency, and due-reservation queries.
 
 ## Decision log
 

@@ -12,7 +12,7 @@ Status snapshot: 2026-08-12. Task 01 was merged in `master` commit `f7f7705`. Ta
 - `REVIEW`: its pull request is ready but not merged; dependants must still wait.
 - `DONE`: verified work is merged into `master`.
 
-Task 01, Task 11, and supplemental Tasks 05A, 06A, and 08A are merged and `DONE`. **Task 12 — Fixed-price policy gate** is in `REVIEW`; Task 13 remains blocked until Task 12 is merged. The Task 07 delivery request mapped to Task 11 because the original Task 07 was already merged. External legal/provider evidence work may proceed without changing blocked implementation tasks to `READY`.
+Task 01, Tasks 11–12, and supplemental Tasks 05A, 06A, and 08A are merged and `DONE`. **Task 13 — Order and unique-item reservation core** is in `REVIEW`; dependants remain blocked until it is merged. The Task 07 delivery request mapped to Task 11 because the original Task 07 was already merged. External legal/provider evidence work may proceed without changing blocked implementation tasks to `READY`.
 
 ## Decision register
 
@@ -51,8 +51,8 @@ Blocker IDs refer to the external blocker register below. Acceptance criteria de
 | 09 | Read-only API foundation | 05, 06 | DONE | `/api/v1/health` and paginated listing endpoints return active EUR data, reuse catalog filters, and expose integer amounts with currency. | — |
 | 10 | SEO and public-page baseline | 03, 06 | DONE | Public SSR pages provide useful HTML, localized canonical/hreflang metadata, index controls, and original marketplace content without unsupported claims. | — |
 | 11 | Production image hardening | 07 | DONE | Uploads are decoded/re-encoded, metadata is stripped, safe dimensions/limits are enforced, orphan cleanup remains reliable, and focused tests cover invalid files. | — |
-| 12 | Fixed-price policy gate | 01, 03, 04, 08A | REVIEW | [Approved record](FIXED-PRICE-POLICY.md) fixes zero-fee/protection boundaries, method-specific reservation starts/windows, expiry/retry/late-payment behavior, cancellation authority, listing/order outcomes, seller handoff, deferred exceptional gates, and exact `sq`/`en` wording without enabling a provider flow. | — |
-| 13 | Order and unique-item reservation core | 12 | BLOCKED | A tested idempotent transaction creates one 15-minute reservation under a listing lock; buyer/admin/system cancellation, one-minute expiry cleanup, conditional inventory release, immutable audit, and concurrency behavior follow `fixed_price_v1` without provider calls. | — |
+| 12 | Fixed-price policy gate | 01, 03, 04, 08A | DONE | [Approved record](FIXED-PRICE-POLICY.md) fixes zero-fee/protection boundaries, method-specific reservation starts/windows, expiry/retry/late-payment behavior, cancellation authority, listing/order outcomes, seller handoff, deferred exceptional gates, and exact `sq`/`en` wording without enabling a provider flow. | — |
+| 13 | Order and unique-item reservation core | 12 | REVIEW | A tested idempotent transaction creates one 15-minute reservation under a listing lock; a database-constrained inventory claim, buyer/admin/system cancellation, one-minute expiry cleanup, conditional inventory release, immutable audit, and MySQL concurrency proof follow `fixed_price_v1` without provider calls. | — |
 | 14 | Authoritative totals and fee snapshots | 12, 13 | BLOCKED | Shared code calculates EUR item, buyer fee, shipping, total, seller fees (both zero), and seller payable in cents and snapshots the policy/version. | — |
 | 15 | POK validation and go/no-go | 01, 12 | BLOCKED | Staging evidence and written answers close the required POK checklist; provider/legal fit is recorded as go/no-go before an adapter or SDK is added. | B-PAY, B-LEGAL |
 | 16 | Payment integration and reconciliation | 14, 15 | BLOCKED | A provider boundary supports required POK operations; verified idempotent events/retrieval drive normalized payment/refund state and auditable financial records without card data. | B-PAY, B-LEGAL |
