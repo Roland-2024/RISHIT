@@ -13,7 +13,7 @@ These decisions may be changed only through the authoritative decision register 
 - **C-03 — Language:** public customer UI supports Albanian (`sq`) and English (`en`); user-authored content remains in its original language.
 - **C-04 — Currency:** new public listings and marketplace transactions use EUR, represented internally as integer cents with explicit currency.
 - **C-05 — Seller charges:** listing an item costs the seller EUR 0 and selling an item costs the seller EUR 0.
-- **C-06 — Buyer charges:** approved internal policy `buyer_fee_none_v1` charges EUR 0 with no tax and a EUR 0 refund. This does not approve a public "fee-free" marketing claim or any Buyer Protection proposition.
+- **C-06 — Buyer charges:** buyer-side fees, tax, display, and refund treatment remain unresolved until product, finance, tax/fiscal, and Albanian legal owners approve a versioned policy. No public fee or Buyer Protection proposition is approved.
 - **C-07 — Inventory:** a listing represents one unique physical item. Availability, purchase, bidding, and auction closure must be server-authoritative and concurrency-safe when those flows are implemented.
 - **C-08 — Provider boundaries:** payments and shipping remain provider-neutral until actual providers and terms are approved. Delivery, order completion, settlement eligibility, and payout are distinct facts.
 - **C-09 — Current capability:** provider-neutral order records exist internally, but no production checkout, payment, shipping, offer, auction, messaging, review, return, dispute, settlement, or payout flow is implemented or presented as complete.
@@ -31,7 +31,7 @@ These are safe implementation boundaries, not policy promises. Keep them configu
 - **A-05 — Cookies:** non-essential cookies stay disabled until lawful-basis, consent, notice, and withdrawal requirements for each category are approved.
 - **A-06 — Retention:** retention periods are policy-driven rather than scattered through code. Deletion, anonymization, legal hold, financial audit, fraud, and dispute records remain distinguishable.
 - **A-07 — Rights operations:** export, correction, restriction, and deletion requests use authenticated, auditable workflows; the exact data scope, exceptions, format, and deadlines await counsel approval.
-- **A-08 — Fees:** `buyer_fee_none_v1` is the approved versioned zero-fee calculation and is snapshotted on orders. Public marketing wording and any future Buyer Protection proposition remain absent until specifically approved.
+- **A-08 — Fees:** existing provider-neutral records may retain historical internal fee snapshots, but no buyer-side fee version is approved for checkout. Public fee wording and any future Buyer Protection proposition remain absent until specifically approved.
 - **A-09 — Moderation:** restricted-goods rules, reports, decisions, appeals, and evidence are policy-driven and auditable rather than hardcoded into public copy.
 - **A-10 — Dispute evidence:** messages, images, tracking, identity, and payment evidence use purpose-limited authorization and configurable retention.
 - **A-11 — Auctions:** timing and increment rules remain configurable, while all bidding remains disabled until the auction policy and legal gate closes.
@@ -71,6 +71,18 @@ These are safe implementation boundaries, not policy promises. Keep them configu
 
 ### Seller identity and KYC responsibility
 
+The 2026-08-12 payment-method review checked the current POK sources, the
+Bank of Albania payment-services framework and electronic-money register, the
+operational EUR/SEPA notices, and Albania's current personal-data law. These
+primary sources establish regulated infrastructure only. They do not approve
+RISHIT's marketplace roles, custody/safeguarding, seller onboarding, split,
+settlement/payout, or platform-account bank-transfer model. No written provider
+answers, contract, responsibility matrix, or qualified counsel opinion was
+available. POK online payment and platform-account bank transfer therefore
+remain **NO-GO**; direct buyer-to-seller transfer remains forbidden. The
+evidence record and exact questionnaires are in
+[Payment Method Validation](POK-MARKETPLACE-RESEARCH.md).
+
 - [ ] **L-22 (Albanian counsel + payment provider):** determine whether and when RISHIT has KYC, AML, sanctions, beneficial-owner, or transaction-monitoring duties; do not infer them from a provider API.
 - [ ] **L-23 (Payment provider):** document which users the provider onboards, required account type/currency, evidence collected, verification states, rejection/review handling, refresh frequency, and marketplace access to results.
 - [ ] **L-24 (Counsel + provider):** allocate responsibility for seller, bidder, and payout-recipient verification, including thresholds, risk triggers, re-verification, failed verification, and account/transaction restrictions.
@@ -88,7 +100,7 @@ These are safe implementation boundaries, not policy promises. Keep them configu
 
 ### Buyer fee and Buyer Protection wording
 
-- [ ] **L-33 (Finance + Albanian counsel):** product policy `buyer_fee_none_v1` fixes the buyer fee, tax, display, and refund amounts at EUR 0. Confirm tax/fiscal treatment, required checkout/invoice disclosure, change notice, and the exact public wording. A future charge requires a new review and policy version.
+- [ ] **L-33 (Product + finance + Albanian counsel):** approve and document the buyer-side fee, tax, display, refund treatment, checkout/invoice disclosure, change notice, and exact public wording. Buyer-side fees are unresolved; no implementation or provider input may invent them.
 - [ ] **L-34 (Albanian counsel + provider):** define the exact service, eligibility, exclusions, evidence, deadlines, remedies, refundability, and responsible party behind any Buyer Protection proposition.
 - [ ] **L-35 (Albanian counsel):** confirm how the service interacts with mandatory consumer rights, C2C remedies, returns, provider disputes/chargebacks, courier claims, and ADR; approve wording that does not purport to waive any applicable mandatory rights.
 - [ ] **L-36 (Albanian counsel + provider):** approve the name and every public claim; do not describe the service as escrow, insurance, a guarantee, custody, or assured reimbursement without documented authority and capability.
@@ -142,14 +154,14 @@ This table uses the product task numbers in [ROADMAP.md](ROADMAP.md). `DONE` des
 | Task | Legal/policy impact | Gate |
 | --- | --- | --- |
 | 08 — Favorites | Existing private-feature scope stays complete. Account/favorites notice, retention, export, and deletion remain part of the launch privacy gate. | L-15–L-21 before production launch (Task 35); does not reopen Task 08. |
-| 08A — Order and fee domain | Internal provider-neutral records implement approved zero-fee policy `buyer_fee_none_v1`; no checkout, public fee claim, payment, shipping, refund, or settlement behavior is exposed. | L-15–L-21 for snapshot retention/staff access and L-33–L-42 before checkout or public fee claims. |
+| 08A — Order and fee domain | Internal provider-neutral records can retain their historical fee-policy snapshot; no checkout, approved buyer charge, public fee claim, payment, shipping, refund, or settlement behavior is exposed. | L-15–L-21 for snapshot retention/staff access and L-33–L-42 before checkout or public fee claims. |
 | 09 — Read-only API | No direct commerce gate. Future authenticated/mobile data use must follow approved privacy and rights handling. | L-15–L-21 before authenticated expansion (Task 36). |
 | 10 — SEO baseline | Existing pages avoid unsupported claims. New commerce, protection, seller-verification, auction, and Kosovo SEO copy cannot precede approval. | Public-claims gate below; later Task 34 remains blocked by `B-LEGAL`. |
 | 11 — Image hardening | No direct legal blocker to technical image safety. Image/listing retention, prohibited goods, IP reports, and moderation rules remain later gates. | L-17–L-18 and L-43–L-47 before Tasks 28/35, not before Task 11. |
 | 12 — Fixed-price policy gate | Internal engineering defaults are recorded without approving checkout, mandatory-rights interpretation, returns, provider behavior, or public marketing. | No external blocker to the record itself; L-01–L-14 and L-33–L-37 remain gates for the customer flow. |
 | 13 — Order/reservation core | May implement only the internal reservation, expiry, pre-payment cancellation, audit, and conditional inventory-release behavior in `fixed_price_v1`. | Task 12 first; L-04 and L-17–L-18 still gate customer launch, not the reversible internal core. |
-| 14 — Totals/fee snapshots | Policy `buyer_fee_none_v1` is defined and snapshotted; Task 14 remains transitively blocked by Task 12 for the full checkout policy. | L-33–L-42 before checkout or public fee claims. |
-| 15 — POK validation | Direct provider/legal blocker: marketplace approval, roles, KYC, custody, settlement, refund, and payout wording need written evidence. | `B-PAY` and `B-LEGAL`; L-22–L-32 plus [POK-MARKETPLACE-RESEARCH.md](POK-MARKETPLACE-RESEARCH.md). |
+| 14 — Totals/fee snapshots | The merged internal calculator and immutable snapshots do not approve a buyer-side checkout fee or public claim; historical snapshots must not be rewritten. | `B-FEE` and L-33–L-42 remain open before checkout or public fee claims. |
+| 15 — Payment-method validation | The dated primary-source review records POK online payment and platform-account bank transfer as NO-GO, direct transfer as forbidden, missing staging/written/legal evidence, and exact provider questionnaires. | Research may merge, but `B-PAY` and `B-LEGAL` stay open; L-22–L-32 plus [POK-MARKETPLACE-RESEARCH.md](POK-MARKETPLACE-RESEARCH.md). |
 | 16 — Payment integration | Direct provider/legal blocker. An API shape is not authorization to operate the proposed marketplace money flow. | Tasks 14/15 plus `B-PAY` and `B-LEGAL`; L-27–L-32 and L-38–L-41. |
 | 17 — Fixed-price checkout | Transitively blocked through Tasks 12, 14, and 16; checkout copy also needs approved price, rights, payment, and remedy disclosures. | `B-PAY` and upstream legal gates; L-06, L-10–L-14, L-30, and L-33–L-42. |
 
@@ -161,7 +173,7 @@ Until the relevant checklist items are closed, public UI, metadata, structured d
 - that **Buyer Protection** exists, what it costs, what it covers, or that reimbursement/refund is guaranteed;
 - that a payment is final, a seller is entitled to settlement, or payout occurs within a stated time merely because an order is paid, shipped, delivered, or completed;
 - that RISHIT is licensed, regulated, insured, a payment service, merchant of record, agent, custodian, arbitrator, or guarantor without approved evidence and wording;
-- "no fees" or "free transactions" as a general marketing claim. The EUR 0 seller and buyer fee facts may appear internally; public and SEO wording still requires the applicable approval under L-33–L-37;
+- "no fees" or "free transactions" as a general marketing claim. Seller fees remain EUR 0, but buyer-side fees and all public/SEO wording still require approval under L-33–L-37;
 - a return right, window, free return, refund deadline, cancellation right, or dispute outcome not backed by approved policy and provider operations;
 - that sellers, bidders, identities, listings, brands, authenticity, condition, legality, or safety are verified or guaranteed;
 - guaranteed delivery dates, tracked/insured shipping, loss/damage reimbursement, courier coverage, or platform responsibility before a selected courier contract and policy support them;
