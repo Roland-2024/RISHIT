@@ -56,6 +56,10 @@ class OrderDomainTest extends TestCase
         $this->assertSame(0, $order->fee_policy_snapshot['buyer']['tax_amount']);
         $this->assertSame(0, $order->fee_policy_snapshot['seller_listing_fee_amount']);
         $this->assertSame(0, $order->fee_policy_snapshot['seller_selling_fee_amount']);
+        $this->assertSame(10_000, $order->fee_policy_snapshot['item_amount']);
+        $this->assertSame(750, $order->fee_policy_snapshot['shipping_amount']);
+        $this->assertSame(10_750, $order->fee_policy_snapshot['total_amount']);
+        $this->assertSame(10_000, $order->fee_policy_snapshot['seller_payable_amount']);
         $this->assertSame(ListingStatus::Reserved, $listing->fresh()->status);
         $this->assertSame('fixed_price_v1_online', $order->reservation_profile->value);
         $this->assertTrue($order->inventory_claim);
@@ -80,6 +84,27 @@ class OrderDomainTest extends TestCase
         $this->assertSame(10_000, $order->item_amount);
     }
 
+    public function test_historical_amounts_do_not_follow_later_configuration_changes(): void
+    {
+        [$listing, $buyer, $buyerAddress, $sellerAddress] = $this->orderInputs();
+        $order = app(CreateOrder::class)(
+            $listing,
+            $buyer,
+            $buyerAddress,
+            $sellerAddress,
+            new Money(500, Currency::EUR),
+            'historical-totals',
+        );
+        $snapshot = $order->fee_policy_snapshot;
+
+        config(['marketplace.buyer_fee_policy' => 'buyer_fee_future_v2']);
+        $order->refresh();
+
+        $this->assertSame(10_500, $order->total_amount);
+        $this->assertSame(BuyerFeePolicy::NoFeeV1, $order->buyer_fee_policy_version);
+        $this->assertSame($snapshot, $order->fee_policy_snapshot);
+    }
+
     public function test_commercial_snapshots_cannot_be_changed(): void
     {
         [$listing, $buyer, $buyerAddress, $sellerAddress] = $this->orderInputs();
@@ -100,6 +125,29 @@ class OrderDomainTest extends TestCase
         }
 
         $this->assertSame(10_000, $order->fresh()->total_amount);
+    }
+
+    public function test_inconsistent_commercial_totals_cannot_be_created(): void
+    {
+        [$listing, $buyer, $buyerAddress, $sellerAddress] = $this->orderInputs();
+        $order = app(CreateOrder::class)(
+            $listing,
+            $buyer,
+            $buyerAddress,
+            $sellerAddress,
+            new Money(0, Currency::EUR),
+            'consistent-order',
+        );
+        $tampered = $order->replicate()->forceFill([
+            'idempotency_key' => 'tampered-order',
+            'inventory_claim' => null,
+            'total_amount' => $order->total_amount + 1,
+        ]);
+
+        $this->expectException(DomainException::class);
+        $this->expectExceptionMessage('commercial totals or fee snapshots are inconsistent');
+
+        $tampered->save();
     }
 
     public function test_invalid_state_transitions_are_rejected_and_valid_ones_are_audited(): void

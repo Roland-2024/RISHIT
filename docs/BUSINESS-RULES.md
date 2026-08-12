@@ -15,7 +15,8 @@
 - Historical non-EUR records are preserved for audit and owner access, excluded from public discovery, and never relabeled or converted without an explicit migration policy.
 - No financial calculation uses floating point.
 - Albanian and English presentation use the same EUR process.
-- Orders snapshot item price, fees, shipping, total, seller payable, and currency. Later configuration/exchange-rate changes cannot rewrite history.
+- One shared server-side calculator derives order item price, approved buyer fee, snapshotted shipping charge, seller listing fee, seller selling fee, total, and seller payable. Every amount is a signed integer in EUR cents with explicit currency; mixed currencies, negative inputs, overflow, and inconsistent persisted totals are rejected.
+- Orders snapshot the calculator's policy identifier/version and every explanatory amount. Later configuration changes cannot recalculate or rewrite historical orders.
 - Provider amount units must be confirmed and explicitly mapped before POK integration.
 
 ## Inventory and orders
@@ -40,7 +41,7 @@
 
 - RISHIT charges sellers EUR 0 to list and EUR 0 when an item sells.
 - Buyer fee policy `buyer_fee_none_v1` charges EUR 0, has no tax, displays EUR 0, and refunds EUR 0. A future buyer charge requires a separately approved version and cannot rewrite historical orders.
-- Backend-calculated totals and verified provider events are authoritative.
+- Backend-calculated totals and verified provider events are authoritative. Clients may choose only opaque, currently valid options offered by the server; prices, fees, currency, shipping charges, and totals are never accepted as client financial truth.
 - Authoritative payment evidence received after reservation release leaves the terminal order and current listing unchanged and enters the future provider-backed reconciliation audit; it cannot displace a later buyer. Client callbacks and participant assertions are never payment truth.
 - Card data and reusable raw card payloads are never stored or logged.
 - Duplicate, delayed, retried, and out-of-order provider events are expected.

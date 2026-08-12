@@ -4,7 +4,6 @@ namespace App\Domain\Commerce;
 
 use App\Domain\Shared\Currency;
 use App\Domain\Shared\Money;
-use App\Models\Listing;
 use InvalidArgumentException;
 use OverflowException;
 
@@ -14,40 +13,66 @@ final readonly class OrderAmounts
         public int $item,
         public int $shipping,
         public int $buyerFee,
-        public int $sellerFee,
+        public int $sellerListingFee,
+        public int $sellerSellingFee,
         public int $total,
         public int $sellerPayable,
         public Currency $currency,
     ) {}
 
-    public static function forListing(
-        Listing $listing,
+    public static function calculate(
+        Money $item,
         Money $shipping,
         BuyerFeePolicy $buyerFeePolicy = BuyerFeePolicy::NoFeeV1,
     ): self {
-        if ($listing->currency !== Currency::EUR || $shipping->currency !== Currency::EUR) {
-            throw new InvalidArgumentException('Orders require EUR listing and shipping amounts.');
+        $buyerFee = $buyerFeePolicy->fee();
+
+        if ($item->currency !== $shipping->currency || $item->currency !== $buyerFee->currency || $item->currency !== Currency::EUR) {
+            throw new InvalidArgumentException('Order amounts must use one EUR currency.');
         }
 
-        if ($listing->price_amount <= 0 || $shipping->amount < 0) {
+        if ($item->amount <= 0 || $shipping->amount < 0 || $buyerFee->amount < 0) {
             throw new InvalidArgumentException('Order amounts must be non-negative and the item price must be positive.');
         }
 
-        $buyerFee = $buyerFeePolicy->fee()->amount;
-        $sellerFee = 0;
+        $sellerListingFee = 0;
+        $sellerSellingFee = 0;
 
-        if ($listing->price_amount > PHP_INT_MAX - $shipping->amount - $buyerFee) {
+        if ($item->amount > PHP_INT_MAX - $shipping->amount || $item->amount + $shipping->amount > PHP_INT_MAX - $buyerFee->amount) {
             throw new OverflowException('Order total exceeds the supported integer range.');
         }
 
         return new self(
-            item: $listing->price_amount,
+            item: $item->amount,
             shipping: $shipping->amount,
-            buyerFee: $buyerFee,
-            sellerFee: $sellerFee,
-            total: $listing->price_amount + $shipping->amount + $buyerFee,
-            sellerPayable: $listing->price_amount - $sellerFee,
+            buyerFee: $buyerFee->amount,
+            sellerListingFee: $sellerListingFee,
+            sellerSellingFee: $sellerSellingFee,
+            total: $item->amount + $shipping->amount + $buyerFee->amount,
+            sellerPayable: $item->amount - $sellerListingFee - $sellerSellingFee,
             currency: Currency::EUR,
         );
+    }
+
+    public function sellerFees(): int
+    {
+        return $this->sellerListingFee + $this->sellerSellingFee;
+    }
+
+    /** @return array<string, array<string, int|string>|int|string> */
+    public function snapshot(BuyerFeePolicy $buyerFeePolicy): array
+    {
+        return [
+            'buyer' => $buyerFeePolicy->snapshot(),
+            'item_amount' => $this->item,
+            'shipping_amount' => $this->shipping,
+            'buyer_fee_amount' => $this->buyerFee,
+            'seller_listing_fee_amount' => $this->sellerListingFee,
+            'seller_selling_fee_amount' => $this->sellerSellingFee,
+            'seller_fee_amount' => $this->sellerFees(),
+            'total_amount' => $this->total,
+            'seller_payable_amount' => $this->sellerPayable,
+            'currency' => $this->currency->value,
+        ];
     }
 }

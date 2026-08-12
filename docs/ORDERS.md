@@ -14,7 +14,7 @@ Reservation behavior follows the [Fixed-Price Policy Decision Record](FIXED-PRIC
 
 1. Lock the listing.
 2. Re-check seller, buyer, listing availability, and authoritative price.
-3. Calculate and snapshot the EUR item amount, fees, shipping, total, seller payable, and currency using integer cents.
+3. Use the shared calculator to derive and snapshot the EUR item amount, approved buyer fee, server-provided shipping charge, both seller fees, total, seller payable, and currency using signed integer cents.
 4. Create the order with `fixed_price_v1_online`, a committed start, a fixed 15-minute deadline, and an active inventory claim.
 5. Mark the listing `reserved` and append the initial audit transition atomically.
 6. Commit without initiating external payment work.
@@ -25,9 +25,11 @@ The listing row is locked and authoritative visibility is re-read. A nullable `i
 
 ## Snapshots and audit
 
-Orders retain the commercial facts needed after a listing/user changes: item title/description/condition/price, buyer/seller identities, buyer/seller addresses, fee policy/version, shipping price, and timestamps. Order amounts come from shared server-side calculation, never client totals. Payment and ledger records remain deferred until a real provider-backed use case exists; financial truth is never inferred only from `orders.state`.
+Orders retain the commercial facts needed after a listing/user or configuration changes: item title/description/condition/price, buyer/seller identities, buyer/seller addresses, fee policy identifier/version, shipping price, both seller fees, buyer fee, total, seller payable, currency, and timestamps. The same calculator serves future Blade and `/api/v1` callers. It rejects mixed currencies, negative input, integer overflow, and inconsistent persisted totals; clients never submit any of those values as financial truth. Payment and ledger records remain deferred until a real provider-backed use case exists; financial truth is never inferred only from `orders.state`.
 
 Buyer fee policy `buyer_fee_none_v1` snapshots a EUR 0 fee, EUR 0 tax, EUR 0 display amount, and EUR 0 refundable amount. Seller listing and selling fees are also fixed at EUR 0. A future buyer policy requires a new approved version and cannot alter historical snapshots.
+
+Shipping is not integrated. A future client may submit only an opaque identifier for a currently valid server-provided service/quote; the server resolves and snapshots its charge. It must never accept a client-submitted shipping amount or total.
 
 ## Implemented reservation policy
 

@@ -65,7 +65,7 @@ final class CreateOrder
             }
 
             $policy = BuyerFeePolicy::from(config('marketplace.buyer_fee_policy'));
-            $amounts = OrderAmounts::forListing($listing, $authoritativeShipping, $policy);
+            $amounts = OrderAmounts::calculate($listing->price(), $authoritativeShipping, $policy);
             $profile = ReservationProfile::FixedPriceOnlineV1;
             $now = now()->toImmutable();
 
@@ -84,16 +84,11 @@ final class CreateOrder
                 'item_amount' => $amounts->item,
                 'shipping_amount' => $amounts->shipping,
                 'buyer_fee_amount' => $amounts->buyerFee,
-                'seller_fee_amount' => $amounts->sellerFee,
+                'seller_fee_amount' => $amounts->sellerFees(),
                 'total_amount' => $amounts->total,
                 'seller_payable_amount' => $amounts->sellerPayable,
                 'buyer_fee_policy_version' => $policy,
-                'fee_policy_snapshot' => [
-                    'buyer' => $policy->snapshot(),
-                    'seller_listing_fee_amount' => 0,
-                    'seller_selling_fee_amount' => 0,
-                    'currency' => $amounts->currency->value,
-                ],
+                'fee_policy_snapshot' => $amounts->snapshot($policy),
                 'item_snapshot' => $this->itemSnapshot($listing),
                 'buyer_snapshot' => $this->userSnapshot($buyer),
                 'seller_snapshot' => $this->userSnapshot($seller),
