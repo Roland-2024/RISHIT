@@ -2,6 +2,11 @@
 
 POK Payments is the intended first provider, not a permanent domain dependency. No production payment flow is implemented in Phase 1.
 
+As of 2026-08-12, both POK online payment and platform-account bank
+transfer are **NO-GO** for Task 16. No method has sufficient provider,
+staging, operational, and Albanian legal evidence. See the dated
+[payment-method validation](POK-MARKETPLACE-RESEARCH.md).
+
 ## Internal design
 
 The commerce domain will own order totals, payment intent, normalized payment state, allowed transitions, and settlement eligibility. A provider adapter will own authentication, POK payloads, response/status mapping, retries, and webhook verification.
@@ -17,7 +22,7 @@ This design will be created with the first real commerce use case, not as empty 
 ## Safety invariants
 
 - Seller listing and selling fees are fixed at zero; payment implementation cannot introduce them through client or provider input.
-- Buyer fee policy `buyer_fee_none_v1` is fixed at EUR 0 with no tax and a EUR 0 refund. Future buyer charges require a separately approved policy version.
+- Buyer-side fees remain unresolved. No checkout or provider integration may invent a buyer fee, tax, display amount, refund treatment, or public fee claim before an approved version is documented.
 - Server derives EUR amount, fees, and order linkage; clients cannot select a currency.
 - Card numbers, CVV, raw reusable card data, keys, and secrets are never persisted/logged.
 - Create/capture/cancel/refund/webhook operations require idempotency keys or equivalent local uniqueness.
@@ -30,21 +35,18 @@ This design will be created with the first real commerce use case, not as empty 
 
 ## Candidate methods
 
-- **Instant online payment:** primary candidate; a future local reservation lasts
-  15 minutes and verified provider evidence alone confirms payment.
-- **Platform-account bank transfer:** acceptable candidate only when ownership,
-  EUR processing, unique references, authoritative retrieval, reconciliation,
-  refunds, privacy, and support are verified. Its approved engineering default is
-  a 24-hour reservation because it is not assumed to share the online timeout.
-- **Cash on Delivery:** launch candidate only, disabled until a selected courier
-  confirms C2C service, EUR pricing, APIs/reconciliation, cash collection and
-  remittance, failed/refused delivery, returns, liability, privacy, and support.
+| Method | Status | Boundary |
+| --- | --- | --- |
+| POK instant online payment | **NO-GO** | Public API shapes and a staging host exist, but written marketplace approval, EUR units, seller/KYC, split/settlement, webhook, idempotency, reconciliation, rate-limit, legal, and authorized staging evidence are incomplete. A future local reservation would last 15 minutes; only authenticated provider evidence can confirm payment. |
+| Platform/provider-account bank transfer | **NO-GO** | No named provider/account has verified recipient ownership, EUR rails, unique references, authoritative incoming-payment retrieval/events, timing/finality, refunds/reversals, fees, reconciliation, data roles, or Albania marketplace legality. The disabled engineering default is a 24-hour reservation. |
+| Direct buyer-to-seller bank transfer | **FORBIDDEN** | It is not part of RISHIT. Screenshots and participant assertions are never proof. |
+| Cash on Delivery | **NO-GO** | Disabled until a selected courier confirms C2C EUR service, API/reconciliation, cash collection/remittance, failed/refused delivery, returns, liability, privacy, and support. |
 
 Reservation expiry, retry, cancellation, late-confirmation, and bilingual wording
 are authoritative in [FIXED-PRICE-POLICY.md](FIXED-PRICE-POLICY.md).
 
 ## Open decisions
 
-POK marketplace approval, seller/KYC/account requirements, provider split/refund behavior, authorization hold duration, capture/payout timing, funding-method enablement, any future Buyer Protection proposition, dispute period, tax/fiscal treatment, and Kosovo support.
+Buyer-side fee policy; POK marketplace approval; seller/KYC/account requirements; provider split/refund behavior; authorization hold duration; capture/payout timing; funding-method enablement; any future Buyer Protection proposition; dispute period; tax/fiscal treatment; and Kosovo support.
 
 See [POK-MARKETPLACE-RESEARCH.md](POK-MARKETPLACE-RESEARCH.md) for provider evidence and [LEGAL-READINESS.md](LEGAL-READINESS.md) for the counsel/provider decision gates and prohibited public claims.
