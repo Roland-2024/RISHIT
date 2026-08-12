@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use App\Domain\Commerce\BuyerFeePolicy;
+use App\Domain\Commerce\OrderAmounts;
 use App\Domain\Commerce\OrderState;
 use App\Domain\Commerce\ReservationProfile;
 use App\Domain\Shared\Currency;
+use App\Domain\Shared\Money;
+use DomainException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -61,6 +64,24 @@ class Order extends Model
 
     protected static function booted(): void
     {
+        static::creating(function (self $order): void {
+            $amounts = OrderAmounts::calculate(
+                new Money($order->item_amount, $order->currency),
+                new Money($order->shipping_amount, $order->currency),
+                $order->buyer_fee_policy_version,
+            );
+
+            if (
+                $order->buyer_fee_amount !== $amounts->buyerFee
+                || $order->seller_fee_amount !== $amounts->sellerFees()
+                || $order->total_amount !== $amounts->total
+                || $order->seller_payable_amount !== $amounts->sellerPayable
+                || $order->fee_policy_snapshot !== $amounts->snapshot($order->buyer_fee_policy_version)
+            ) {
+                throw new DomainException('Order commercial totals or fee snapshots are inconsistent.');
+            }
+        });
+
         static::updating(function (self $order): void {
             if ($order->isDirty(self::IMMUTABLE_ATTRIBUTES)) {
                 throw new LogicException('Order commercial snapshots cannot be changed.');
