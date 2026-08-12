@@ -24,7 +24,7 @@ Listing collections accept `q`, `category`, `brand`, `condition`, optional `curr
 - Success resources use a top-level `data` envelope; collections will add `links`/`meta` as needed.
 - Validation/auth/domain errors use stable status codes and machine-readable fields once the first domain endpoint exists.
 - Controllers validate/authorize and call shared application/domain logic; no rule is copied from Blade flows.
-- Clients never submit authoritative prices, totals, fees, payment state, shipping state, or winning-bid state.
+- Clients never submit authoritative prices, totals, fees, shipping charges, seller payables, payment state, shipping state, or winning-bid state. Future order mutations may accept only opaque identifiers for currently valid choices returned by the server; the shared calculator resolves and snapshots all signed integer EUR-cent amounts and policy versions.
 - Mutating money/inventory/external-provider endpoints will require idempotency semantics.
 - Breaking changes require a new API version; additive fields do not.
 

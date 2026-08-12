@@ -21,9 +21,10 @@ This design will be created with the first real commerce use case, not as empty 
 
 ## Safety invariants
 
-- Seller listing and selling fees are fixed at zero; payment implementation cannot introduce them through client or provider input.
-- Buyer-side fees remain unresolved. No checkout or provider integration may invent a buyer fee, tax, display amount, refund treatment, or public fee claim before an approved version is documented.
-- Server derives EUR amount, fees, and order linkage; clients cannot select a currency.
+- Seller listing and selling fees are independently calculated and snapshotted as exactly EUR 0; payment implementation cannot introduce them through client or provider input.
+- Buyer-side fees remain unresolved. The existing internal snapshot does not approve a checkout fee, tax, display amount, refund treatment, or public fee claim; provider integration cannot invent them before an approved version is documented.
+- The shared order calculator derives signed integer EUR-cent item, shipping, fee, total, and seller-payable amounts and snapshots the policy/version. Persisted totals must match that calculation, and historical snapshots never follow later configuration.
+- Clients may select only currently valid server-provided choice identifiers. They cannot select a currency or submit a price, fee, shipping amount, seller payable, or total as financial truth.
 - Card numbers, CVV, raw reusable card data, keys, and secrets are never persisted/logged.
 - Create/capture/cancel/refund/webhook operations require idempotency keys or equivalent local uniqueness.
 - Provider events may duplicate, delay, retry, or arrive out of order.
