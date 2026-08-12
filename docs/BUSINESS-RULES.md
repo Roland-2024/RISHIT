@@ -31,12 +31,17 @@
 - Fixed-price reservation, expiry, cancellation, and listing outcomes follow versioned policy [`fixed_price_v1`](FIXED-PRICE-POLICY.md). Instant online payment uses 15 minutes; an approved platform-account bank transfer would use 24 hours; retries never extend either deadline.
 - Due reservations are rechecked under a row lock by an idempotent one-minute cleanup. Late payment confirmation enters reconciliation and never revives released inventory.
 - Before authoritative payment, the buyer, system, or an audited admin may cancel as defined by policy; the seller cannot cancel directly. Post-payment and post-handoff cancellation requires the later verified provider/legal workflow.
+- Task 13 enables only internal `fixed_price_v1_online` reservations. Platform-account bank transfer and COD profiles remain disabled until their roadmap gates close.
+- Exact live creation retries return the same order and never extend the deadline. A reused key with different inputs or a stale released/deadline-passed retry fails.
+- The database permits one active inventory claim per listing. Cancelled and expired rows remain auditable with a cleared claim, allowing a later reservation only after conditional release.
+- Release reactivates only a still-reserved, undeleted, positive-price EUR listing. Seller-hidden/deleted or admin-hidden inventory is never automatically republished.
 
 ## Payments and settlement
 
 - RISHIT charges sellers EUR 0 to list and EUR 0 when an item sells.
 - Buyer fee policy `buyer_fee_none_v1` charges EUR 0, has no tax, displays EUR 0, and refunds EUR 0. A future buyer charge requires a separately approved version and cannot rewrite historical orders.
 - Backend-calculated totals and verified provider events are authoritative.
+- Authoritative payment evidence received after reservation release leaves the terminal order and current listing unchanged and enters the future provider-backed reconciliation audit; it cannot displace a later buyer. Client callbacks and participant assertions are never payment truth.
 - Card data and reusable raw card payloads are never stored or logged.
 - Duplicate, delayed, retried, and out-of-order provider events are expected.
 - RISHIT must not claim escrow or legal custody of funds without provider and legal confirmation.

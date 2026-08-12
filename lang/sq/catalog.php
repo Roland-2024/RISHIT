@@ -46,6 +46,7 @@ return [
     'buy_unavailable' => 'Blerja aktivizohet pasi të verifikohen pagesa dhe dërgesa.',
     'unavailable' => [
         'hidden' => 'Ky listim është i fshehur dhe nuk është i disponueshëm për blerësit.',
+        'reserved' => 'Ky artikull është i rezervuar dhe nuk është i disponueshëm për blerësit.',
         'sold' => 'Ky artikull është shitur dhe nuk është i disponueshëm për blerësit.',
         'deleted' => 'Ky listim është fshirë dhe nuk është i disponueshëm për blerësit.',
         'legacy_currency' => 'Ky listim i vjetër jo në EUR nuk është i disponueshëm për blerësit.',
@@ -86,6 +87,7 @@ return [
     'status_labels' => [
         'active' => 'E publikuar',
         'hidden' => 'E fshehur',
+        'reserved' => 'E rezervuar',
         'sold' => 'E shitur',
     ],
     'flash' => [

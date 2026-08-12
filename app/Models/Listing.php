@@ -53,6 +53,11 @@ class Listing extends Model
         return $this->hasOne(Order::class);
     }
 
+    public function activeOrder(): HasOne
+    {
+        return $this->hasOne(Order::class)->where('inventory_claim', true);
+    }
+
     public function price(): Money
     {
         return new Money($this->price_amount, $this->currency);
@@ -68,7 +73,11 @@ class Listing extends Model
             return 'legacy_currency';
         }
 
-        return $this->status === ListingStatus::Active ? null : $this->status->value;
+        if ($this->status !== ListingStatus::Active) {
+            return $this->status->value;
+        }
+
+        return $this->activeOrder()->exists() ? ListingStatus::Reserved->value : null;
     }
 
     public function isPubliclyVisible(): bool
@@ -85,7 +94,16 @@ class Listing extends Model
     public function scopeVisible(Builder $query): void
     {
         $query->where('status', ListingStatus::Active)
-            ->where('currency', Currency::EUR);
+            ->where('currency', Currency::EUR)
+            ->whereDoesntHave('activeOrder');
+    }
+
+    public function canReactivateAfterReservation(): bool
+    {
+        return ! $this->trashed()
+            && $this->status === ListingStatus::Reserved
+            && $this->currency === Currency::EUR
+            && $this->price_amount > 0;
     }
 
     /** @param Builder<Listing> $query */

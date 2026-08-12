@@ -16,7 +16,7 @@ RISHIT is a transactional C2C marketplace for second-hand fashion, launching in 
 - Database-backed categories, brands, listings, ordered photos, favorites, and seller profiles
 - Localized catalog search/filtering and owner listing management
 - Read-only `/api/v1/listings` collection and item endpoints
-- Provider-neutral orders with immutable EUR totals, party/address/item snapshots, explicit states, and transition history
+- Provider-neutral orders with immutable EUR snapshots, one constrained 15-minute inventory reservation, explicit states, and transition history
 - PHPUnit 12 tests
 
 Checkout, payments, shipping workflows, offers, auctions, messaging, reviews, and moderation are not implemented yet. See [docs/MVP.md](docs/MVP.md).
@@ -88,13 +88,13 @@ Copy `.env.example`, never commit `.env`, and keep credentials outside source co
 
 Marketplace defaults that are safe to define now live in `config/marketplace.php`. Albanian and English content share one EUR-only marketplace process with no listing, seller, or buyer fees under versioned policy `buyer_fee_none_v1`. No Buyer Protection proposition is approved. Payout timing, dispute periods, and courier pricing remain unresolved and are not hardcoded.
 
-[The fixed-price policy record](docs/FIXED-PRICE-POLICY.md) defines future
-reservation and cancellation defaults without enabling checkout: 15 minutes for
-instant online payment, 24 hours for a verified platform-account bank transfer,
-one-minute idempotent expiry cleanup, and five calendar days for seller handoff.
-Direct buyer-to-seller transfer is prohibited, and COD remains a disabled courier
-candidate. Public fee or transaction marketing still requires applicable legal
-and provider approval.
+[The fixed-price policy record](docs/FIXED-PRICE-POLICY.md) defines reservation
+and cancellation defaults without enabling checkout. The internal instant-online
+profile now holds one item for 15 minutes with one-minute idempotent expiry
+cleanup. The 24-hour platform-account bank-transfer profile, COD, and seller
+handoff workflow remain disabled and unimplemented. Direct buyer-to-seller
+transfer is prohibited. Public fee or transaction marketing still requires
+applicable legal and provider approval.
 
 ## Architecture
 

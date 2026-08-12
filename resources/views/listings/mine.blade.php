@@ -22,18 +22,20 @@
                             <x-money :amount="$listing->price_amount" :currency="$listing->currency" class="mt-2 block font-bold" />
                         </div>
                         <div class="flex flex-wrap gap-2 sm:justify-end">
-                            <a href="{{ route('listings.edit', $listing) }}" class="rounded-full border border-ink/15 px-4 py-2 text-sm font-bold">{{ __('catalog.edit') }}</a>
-                            @if ($listing->status !== App\Domain\Catalog\ListingStatus::Sold)
-                                <form method="POST" action="{{ route('listings.visibility', $listing) }}">
-                                    @csrf @method('PATCH')
-                                    <input type="hidden" name="status" value="{{ $listing->status->value === 'active' ? 'hidden' : 'active' }}">
-                                    <button class="rounded-full border border-ink/15 px-4 py-2 text-sm font-bold">{{ $listing->status->value === 'active' ? __('catalog.hide') : __('catalog.unhide') }}</button>
+                            @if ($listing->status !== App\Domain\Catalog\ListingStatus::Reserved)
+                                <a href="{{ route('listings.edit', $listing) }}" class="rounded-full border border-ink/15 px-4 py-2 text-sm font-bold">{{ __('catalog.edit') }}</a>
+                                @if ($listing->status !== App\Domain\Catalog\ListingStatus::Sold)
+                                    <form method="POST" action="{{ route('listings.visibility', $listing) }}">
+                                        @csrf @method('PATCH')
+                                        <input type="hidden" name="status" value="{{ $listing->status->value === 'active' ? 'hidden' : 'active' }}">
+                                        <button class="rounded-full border border-ink/15 px-4 py-2 text-sm font-bold">{{ $listing->status->value === 'active' ? __('catalog.hide') : __('catalog.unhide') }}</button>
+                                    </form>
+                                @endif
+                                <form method="POST" action="{{ route('listings.destroy', $listing) }}" onsubmit="return confirm(@js(__('catalog.delete_confirm')))">
+                                    @csrf @method('DELETE')
+                                    <button class="rounded-full px-4 py-2 text-sm font-bold text-coral-dark">{{ __('catalog.delete') }}</button>
                                 </form>
                             @endif
-                            <form method="POST" action="{{ route('listings.destroy', $listing) }}" onsubmit="return confirm(@js(__('catalog.delete_confirm')))">
-                                @csrf @method('DELETE')
-                                <button class="rounded-full px-4 py-2 text-sm font-bold text-coral-dark">{{ __('catalog.delete') }}</button>
-                            </form>
                         </div>
                     </article>
                 @endforeach
